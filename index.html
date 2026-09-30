@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XMPR100 — Earn • Task • Grow</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f4f7fb;--dark:#071426;--dark2:#0c1d33;--blue:#1478ff;--purple:#6d4cff;--text:#172033;--muted:#7a8497;--card:#fff;--border:#e8edf5}
+body{font-family:Arial,"Noto Sans Bengali",sans-serif;background:var(--bg);color:var(--text)}
+button{font:inherit;cursor:pointer;border:0}
+.app{display:flex;min-height:100vh}
+.sidebar{width:255px;background:linear-gradient(180deg,#061224,#0b1d35);color:#fff;padding:22px 15px;position:fixed;left:0;top:0;bottom:0;z-index:5}
+.brand{display:flex;align-items:center;gap:10px;padding:4px 10px 28px}
+.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#08a9ff,#673cff);display:grid;place-items:center;font-size:24px;font-weight:900;box-shadow:0 8px 25px #006aff44}
+.brand b{font-size:20px}.brand small{display:block;color:#a9bad1;margin-top:2px;font-size:10px}
+.nav{display:grid;gap:7px}.nav button{background:transparent;color:#bdc9da;text-align:left;padding:13px 14px;border-radius:10px;font-size:14px;display:flex;align-items:center;gap:12px}.nav button:hover,.nav button.active{background:linear-gradient(90deg,#1478ff,#1267dc);color:#fff}
+.nav .logout{color:#ff6674;margin-top:12px}
+.main{margin-left:255px;width:calc(100% - 255px);padding:24px}
+.topbar{height:60px;background:#fff;border:1px solid var(--border);border-radius:14px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.topbar h2{font-size:20px}.profile{display:flex;align-items:center;gap:10px}.avatar{width:36px;height:36px;border-radius:50%;background:#17253a;color:#fff;display:grid;place-items:center;font-weight:bold}.online{font-size:11px;color:#18a86b}
+.page{display:none}.page.active{display:block}
+.welcome{margin-bottom:20px}.welcome h1{font-size:27px;margin-bottom:6px}.welcome p{color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:18px}.stat{background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px;display:flex;gap:14px;align-items:center;box-shadow:0 5px 18px #14213b08}.icon{width:48px;height:48px;border-radius:13px;display:grid;place-items:center;font-size:21px;background:#eaf3ff;color:#1674ff}.stat:nth-child(2) .icon{background:#e9fbf1;color:#13a85f}.stat:nth-child(3) .icon{background:#f1edff;color:#704dff}.stat:nth-child(4) .icon{background:#fff3df;color:#ed9115}.stat small{color:var(--muted);display:block;margin-bottom:5px}.stat strong{font-size:22px}.up{color:#12a765;font-size:11px;margin-top:4px;display:block}
+.grid2{display:grid;grid-template-columns:2fr 1fr;gap:18px}.card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:20px;box-shadow:0 5px 18px #14213b08}.card h3{font-size:16px;margin-bottom:18px}.chart{height:225px;display:flex;align-items:end;gap:14px;padding:10px 5px;border-bottom:1px solid #e9edf4}.bar{flex:1;background:linear-gradient(180deg,#398cff,#c8dcff);border-radius:7px 7px 0 0;min-height:25px;position:relative}.bar span{position:absolute;bottom:-23px;left:50%;transform:translateX(-50%);font-size:10px;color:#8791a2}.tx{display:grid;gap:12px}.txrow{display:flex;justify-content:space-between;align-items:center;padding-bottom:11px;border-bottom:1px solid #eef1f5;font-size:13px}.txrow .amount{font-weight:bold}.tag{font-size:10px;color:#12a765;background:#eafaf1;padding:4px 7px;border-radius:20px}
+.banner{margin-top:18px;border-radius:14px;padding:22px 25px;background:linear-gradient(100deg,#071c55,#126cff);color:#fff;display:flex;align-items:center;justify-content:space-between;overflow:hidden}.banner b{font-size:22px}.banner p{margin-top:6px;color:#d8e8ff;font-size:13px}.telegram{background:#fff;color:#126cff;padding:11px 17px;border-radius:9px;font-weight:bold}
+.task-list,.user-list{display:grid;gap:10px}.task,.user{background:#fff;border:1px solid var(--border);border-radius:13px;padding:12px;display:flex;align-items:center;justify-content:space-between}.task-left{display:flex;gap:12px;align-items:center}.task-icon{width:38px;height:38px;border-radius:11px;background:#eef5ff;display:grid;place-items:center;font-size:20px}.task small,.user small{display:block;color:var(--muted);margin-top:4px}.earn{font-weight:bold;color:#111;font-size:12px}.do{background:#1478ff;color:#fff;padding:9px 15px;border-radius:8px}
+.shop{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.package{text-align:center}.package .picon{font-size:34px;margin:8px}.package h3{margin:8px}.price{font-size:23px;font-weight:bold;margin:12px}.buy{background:#1478ff;color:white;padding:9px 24px;border-radius:8px}.search{padding:11px 13px;border:1px solid var(--border);border-radius:9px;width:100%;margin-bottom:15px}.table{width:100%;border-collapse:collapse;font-size:13px}.table th,.table td{text-align:left;padding:13px 10px;border-bottom:1px solid #edf0f5}.status{color:#12a765;background:#eafaf1;border-radius:15px;padding:4px 8px;font-size:10px}.settings{display:grid;gap:14px;max-width:700px}.field{display:grid;gap:7px}.field label{font-size:13px;font-weight:bold}.field input{padding:12px;border:1px solid var(--border);border-radius:9px}.save{background:#1478ff;color:#fff;padding:12px 20px;border-radius:9px;width:max-content}.deposit-box{max-width:700px}.nagad-number{font-size:24px;font-weight:800;letter-spacing:1px}.copy-btn{background:#1478ff;color:#fff;padding:9px 14px;border-radius:8px;border:0}.notice{background:#fff8e6;border:1px solid #f1d48a;padding:12px;border-radius:10px;margin:12px 0}.deposit-form{display:grid;gap:12px}.deposit-form input{padding:12px;border:1px solid var(--border);border-radius:9px}.deposit-form button{background:#1478ff;color:#fff;padding:12px 18px;border:0;border-radius:9px;font-weight:700}
+@media(max-width:900px){.sidebar{width:74px;padding:15px 8px}.brand{padding:4px 6px 25px}.brand div:not(.logo),.nav span{display:none}.nav button{justify-content:center}.main{margin-left:74px;width:calc(100% - 74px);padding:15px}.stats{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.shop{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.main{padding:10px}.topbar h2{font-size:16px}.welcome h1{font-size:22px}.stats{grid-template-columns:1fr}.shop{grid-template-columns:1fr}.banner{display:block}.telegram{margin-top:15px}.task{gap:10px}.do{padding:8px 10px}.card{padding:14px}}
+
+#authScreen{position:fixed;inset:0;background:#f4f7fb;z-index:9999;display:grid;place-items:center;padding:20px}
+#authCard{width:min(420px,100%);background:#fff;border:1px solid var(--border);border-radius:16px;padding:24px;box-shadow:0 12px 40px #14213b18}
+#authLogo{width:52px;height:52px;margin:auto;border-radius:14px;background:linear-gradient(135deg,#08a9ff,#673cff);display:grid;place-items:center;color:#fff;font-size:28px;font-weight:900}
+.auth-form{display:grid;gap:10px}.auth-form input{padding:12px;border:1px solid var(--border);border-radius:9px}.auth-primary{background:var(--blue);color:#fff;padding:12px;border-radius:9px;font-weight:700}.auth-link{background:transparent;color:var(--blue);padding:8px}
+.admin-only{display:none}.pending{color:#a56b00;background:#fff4d8;border-radius:15px;padding:4px 8px;font-size:10px}.approved{color:#087f4e;background:#eafaf1;border-radius:15px;padding:4px 8px;font-size:10px}
+
+/* XMPR100 compact profile design */
+.profile-click{cursor:pointer}.profile-modal{position:fixed;inset:0;background:#f7f9fc;z-index:10000;display:none;overflow:auto}.profile-modal.show{display:block}.profile-sheet{width:100%;min-height:100vh;background:#f7f9fc}.profile-head{display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#079447,#12b85d);color:#fff;padding:14px 12px 16px;position:sticky;top:0;z-index:2}.profile-back{width:34px;height:34px;border:0;background:transparent;color:#fff;font-size:29px;line-height:1;padding:0}.profile-big-avatar{width:46px;height:46px;border-radius:50%;background:#fff;color:#12a454;display:grid;place-items:center;font-size:19px;font-weight:900}.profile-head h2{font-size:17px;margin:0}.profile-head p{font-size:10px!important;margin:2px 0 0;color:#e9fff2!important}.profile-close{margin-left:auto;width:33px;height:33px;border:0;border-radius:9px;background:#ffffff22;color:#fff;font-size:22px;display:grid;place-items:center}.profile-balance{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:9px 10px}.profile-mini{background:#fff;border:1px solid #e7edf3;border-radius:11px;padding:9px 10px;box-shadow:0 1px 5px #18324a0d}.profile-mini:last-child{grid-column:1/-1}.profile-mini small{display:block;color:#7a8497;font-size:10px;margin-bottom:3px}.profile-mini strong{font-size:16px;color:#172235}.profile-menu{padding:2px 10px 78px}.profile-row{width:100%;display:flex;align-items:center;gap:9px;background:#fff;border:1px solid #e7edf3;border-radius:10px;padding:9px 10px;margin:6px 0;text-align:left;box-shadow:0 1px 4px #18324a08}.profile-row .row-icon{width:32px;height:32px;border-radius:8px;background:#eef7f2;display:grid;place-items:center;font-size:16px;flex:0 0 32px}.profile-row .row-text{flex:1}.profile-row .row-text b{display:block;font-size:12px;color:#1b2638}.profile-row .row-text small{display:block;font-size:9px;color:#8993a2;margin-top:2px}.profile-row .arrow{color:#a0a8b4;font-size:18px}.profile-row.logout{margin-top:10px;background:#fff4f4;border-color:#ffdada}.profile-row.logout .row-icon{background:#ffe5e5}.profile-row.logout .row-text b{color:#e53935}
+/* XMPR100: remove dark left sidebar and use full screen */
+.sidebar{display:none !important}
+.main{margin-left:0 !important;width:100% !important}
+.app{display:block !important;min-height:100vh;background:#f4f7fb}
+@media(max-width:900px){
+  .main{margin-left:0 !important;width:100% !important;padding:12px !important}
+}
+
+
+/* XMPR100 mobile compact redesign */
+html,body{width:100%;min-height:100%;overflow-x:hidden}
+body{background:#f4f7fb}
+.main{padding-bottom:82px!important}
+.page.active{min-height:auto!important}
+@media(min-width:601px){.mobile-bottom-nav{display:none!important}}
+.mobile-bottom-nav{position:fixed;left:0;right:0;bottom:0;height:70px;background:rgba(255,255,255,.98);border-top:1px solid #e6ebf2;box-shadow:0 -5px 18px rgba(20,40,70,.10);display:grid;grid-template-columns:repeat(5,1fr);z-index:9000;padding:6px 4px calc(6px + env(safe-area-inset-bottom));backdrop-filter:blur(8px)}
+.mobile-bottom-nav button{background:transparent;color:#8a94a5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:10px;min-width:0}
+.mobile-bottom-nav button b{font-size:20px;line-height:25px;font-weight:500}
+.mobile-bottom-nav button.active{color:#1478ff}
+.mobile-bottom-nav .home-dot{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#3478ff;color:#fff;box-shadow:0 4px 12px rgba(52,120,255,.28);margin-top:-17px;border:4px solid #fff}
+.deposit-dashboard{display:grid;grid-template-columns:1.6fr 1fr;gap:10px;margin-top:12px}
+.deposit-hero,.deposit-side{border-radius:13px;padding:13px;background:#fff;border:1px solid #e6ebf2;box-shadow:0 3px 12px rgba(20,40,70,.06)}
+.deposit-hero{background:linear-gradient(135deg,#0a2d73,#1478ff);color:#fff}
+.deposit-hero h3,.deposit-side h3{font-size:14px;margin-bottom:6px}
+.deposit-hero p{font-size:10px;line-height:1.5;color:#dce9ff}
+.deposit-number{font-size:20px;font-weight:900;letter-spacing:.7px;margin:9px 0}
+.deposit-side .profile-mini{padding:7px 8px;border-radius:9px}
+.quick-deposit{width:100%;margin-top:7px;background:#1478ff;color:#fff;padding:8px 7px;border-radius:8px;font-size:10px;font-weight:700}
+.history-list{display:grid;gap:6px}
+.history-row{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#f8faff;border:1px solid #e8edf5;border-radius:9px;padding:8px 9px;font-size:10px}
+.history-row b{font-size:11px}.history-row small{font-size:8px;color:#7d8797;line-height:1.4}.deposit-status{font-size:8px;padding:3px 6px;border-radius:12px;white-space:nowrap}.deposit-status.pending{color:#9a6700;background:#fff1c9}.deposit-status.approved{color:#087f4e;background:#e8f8ef}
+@media(max-width:600px){
+  .main{padding:8px 8px 82px!important}
+  .topbar{height:48px;border-radius:10px;padding:0 10px;margin-bottom:10px}
+  .topbar h2{font-size:14px}.profile{gap:6px}.profile .avatar{width:30px;height:30px}.profile .online{font-size:8px}.profile b{font-size:10px}
+  .welcome{margin-bottom:10px}.welcome h1{font-size:19px;margin-bottom:3px}.welcome p{font-size:10px}
+  .stats{grid-template-columns:1fr 1fr;gap:7px;margin-bottom:9px}.stat{padding:9px;border-radius:10px;gap:7px}.stat .icon{width:30px;height:30px;border-radius:8px;font-size:14px}.stat small{font-size:8px;margin-bottom:2px}.stat strong{font-size:14px}.up{font-size:7px}
+  .grid2{grid-template-columns:1fr;gap:8px}.card{padding:10px;border-radius:10px}.card h3{font-size:12px;margin-bottom:9px}.chart{height:90px;gap:7px}.tx{gap:6px}.txrow{font-size:9px;padding-bottom:6px}
+  .banner{margin-top:9px;border-radius:11px;padding:12px 13px}.banner b{font-size:14px}.banner p{font-size:9px}.telegram{padding:7px 9px;border-radius:7px;font-size:9px;margin-top:0}
+  .deposit-dashboard{grid-template-columns:1fr;gap:8px;margin-top:8px}.deposit-hero,.deposit-side{padding:10px;border-radius:11px}.deposit-hero h3,.deposit-side h3{font-size:12px}.deposit-hero p{font-size:9px}.deposit-number{font-size:18px;margin:7px 0}.copy-btn{padding:7px 9px;font-size:9px;border-radius:7px}.deposit-side .profile-mini{padding:7px}.deposit-side .profile-mini small{font-size:8px}.deposit-side .profile-mini strong{font-size:13px}.quick-deposit{padding:7px;font-size:9px}
+  #deposit .welcome{margin-bottom:7px}
+  #deposit .card.deposit-box{padding:10px;margin:0}.deposit-box .notice{padding:8px;font-size:9px;line-height:1.45;margin:7px 0}.deposit-box .field{gap:4px}.deposit-box .field label{font-size:9px}.deposit-box .field input{padding:9px;font-size:11px;border-radius:7px}.nagad-number{font-size:17px;letter-spacing:.5px}.deposit-box .copy-btn{padding:6px 9px}.deposit-form{gap:7px}.deposit-form input{padding:9px}.deposit-form button,.deposit-box .save{padding:9px 10px;font-size:10px;border-radius:7px;width:100%}
+  #deposit .card[style*="margin-top"]{margin-top:8px!important}
+  .profile-balance{gap:6px;padding:8px}.profile-mini{padding:8px}.profile-mini small{font-size:9px}.profile-mini strong{font-size:14px}.profile-menu{padding:2px 8px 78px}.profile-row{padding:8px 9px;margin:5px 0}.profile-row .row-icon{width:28px;height:28px;flex-basis:28px;font-size:14px}.profile-row .row-text b{font-size:11px}.profile-row .row-text small{font-size:8px}
+}
+
+
+/* XMPR100 Support Chat */
+.support-fab{position:fixed;right:16px;bottom:82px;width:48px;height:48px;border:0;border-radius:50%;background:linear-gradient(135deg,#18a85d,#078b49);color:#fff;font-size:22px;box-shadow:0 7px 20px #087c4a45;z-index:8999;display:grid;place-items:center;cursor:pointer}
+.support-modal{position:fixed;inset:0;background:#0007;z-index:12000;display:none;align-items:flex-end;padding:10px}
+.support-modal.show{display:flex}
+.support-sheet{width:min(520px,100%);background:#fff;border-radius:22px 22px 16px 16px;padding:18px;box-shadow:0 16px 50px #0003}
+.support-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}.support-icon{width:44px;height:44px;border-radius:13px;background:#e8fff2;color:#079447;display:grid;place-items:center;font-size:23px}.support-head h3{margin:0;font-size:17px}.support-head small{color:#7a8497}.support-close{margin-left:auto;border:0;background:#f1f4f8;width:36px;height:36px;border-radius:10px;font-size:21px}
+.support-card{background:#f6f9fc;border:1px solid #e6edf4;border-radius:14px;padding:13px}.support-user{font-size:18px;font-weight:800;color:#172235}.support-desc{font-size:11px;color:#6f7b8e;margin-top:5px;line-height:1.5}.support-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.support-actions button,.support-actions a{border:0;border-radius:10px;padding:11px;text-align:center;text-decoration:none;font-size:11px;font-weight:700}.support-telegram{background:#168df0;color:#fff}.support-copy{background:#eaf7f0;color:#087f4e}
+@media(max-width:600px){
+  .withdraw-box{padding:10px!important}
+  .withdraw-box h3{font-size:12px}
+  .withdraw-box .notice{font-size:9px;padding:8px}
+  .withdraw-box .field label{font-size:9px}
+  .withdraw-box input,.withdraw-box select{padding:8px!important;font-size:10px!important}
+  .withdraw-box .save{font-size:10px;padding:9px}
+  .vip-package{padding:10px!important}
+  .vip-package h3{font-size:13px}
+  .vip-package .price{font-size:18px;margin:6px}
+  .vip-package p{font-size:9px;margin:4px 0}
+  .vip-package .buy{font-size:10px;padding:8px 12px}
+}
+@media(max-width:600px){.support-fab{right:12px;bottom:78px;width:44px;height:44px}.support-modal{padding:8px}.support-sheet{padding:15px}.support-actions{grid-template-columns:1fr 1fr}}
+
+/* XMPR100 polished mobile UI */
+.task-list{gap:12px}.task{position:relative;overflow:hidden;min-height:78px;padding:13px 12px;border-radius:16px;border:1px solid #e4eaf3;background:linear-gradient(135deg,#fff,#f8fbff);box-shadow:0 6px 18px rgba(18,42,80,.07)}.task:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,#1478ff,#6d4cff)}.task-icon{width:44px;height:44px;border-radius:13px;background:linear-gradient(135deg,#eaf3ff,#eef0ff);color:#1478ff;font-size:21px;box-shadow:inset 0 0 0 1px #dce7fb}.task-left{min-width:0}.task-left b{font-size:13px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.task-left small{font-size:10px;line-height:1.35}.task .earn{font-size:11px;color:#087f4e;background:#eafaf1;padding:5px 7px;border-radius:20px;white-space:nowrap}.task .do{background:linear-gradient(135deg,#1478ff,#1266df);padding:9px 13px;border-radius:10px;font-size:11px;font-weight:700;box-shadow:0 5px 12px rgba(20,120,255,.2)}.task-actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end}.task-section-hero{margin:0 0 12px;border-radius:17px;padding:15px;color:#fff;background:radial-gradient(circle at 90% 10%,rgba(255,255,255,.22),transparent 35%),linear-gradient(135deg,#071b50,#1478ff);box-shadow:0 8px 24px rgba(12,70,170,.2)}.task-section-hero h2{font-size:18px;margin-bottom:4px}.task-section-hero p{font-size:10px;color:#dbeaff;line-height:1.5}.task-detail-modal{position:fixed;inset:0;background:rgba(4,13,28,.58);z-index:13000;display:none;align-items:flex-end;padding:10px}.task-detail-modal.show{display:flex}.task-detail-sheet{width:min(520px,100%);background:#fff;border-radius:22px 22px 15px 15px;padding:18px;box-shadow:0 18px 55px rgba(0,0,0,.25)}.task-detail-head{display:flex;align-items:center;gap:11px;margin-bottom:14px}.task-detail-icon{width:52px;height:52px;border-radius:15px;background:#edf4ff;display:grid;place-items:center;font-size:25px}.task-detail-head h3{font-size:17px}.task-detail-head small{color:#7a8497;font-size:10px}.task-detail-desc{font-size:12px;color:#5f6b7d;line-height:1.65;background:#f7faff;border:1px solid #e5edf8;border-radius:12px;padding:12px}.task-detail-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.task-meta{background:#f8fafc;border:1px solid #e8edf5;border-radius:11px;padding:10px}.task-meta small{display:block;color:#7a8497;font-size:9px}.task-meta b{display:block;margin-top:3px;font-size:13px}.task-detail-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.task-detail-actions button{padding:11px;border-radius:10px;font-weight:700}.task-go{background:#1478ff;color:#fff}.task-cancel{background:#eef2f7;color:#455267}.task-link-note{font-size:9px;color:#8a94a5;margin-top:8px;text-align:center}.xmpr-brand-banner{margin-top:12px;border-radius:17px;padding:17px 16px;color:#fff;background:radial-gradient(circle at 8% 20%,rgba(255,255,255,.22),transparent 30%),linear-gradient(120deg,#061a48,#0c4fc8 55%,#1680ff);box-shadow:0 9px 26px rgba(9,64,150,.2);position:relative;overflow:hidden}.xmpr-brand-banner:after{content:"X";position:absolute;right:15px;bottom:-24px;font-size:105px;font-weight:900;color:#fff;opacity:.07}.xmpr-brand-banner b{font-size:20px;position:relative;z-index:1}.xmpr-brand-banner p{font-size:10px;color:#dbeaff;margin-top:5px;position:relative;z-index:1}.profile-referral-card{margin:10px;border-radius:15px!important;padding:12px!important;background:linear-gradient(135deg,#fff,#f5fbff)!important}.profile-identity-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;padding:0 10px 8px}.profile-id-card{background:#fff;border:1px solid #e6edf5;border-radius:12px;padding:10px;box-shadow:0 2px 8px rgba(20,40,70,.05)}.profile-id-card small{display:block;color:#7a8497;font-size:9px;margin-bottom:4px}.profile-id-card b{font-size:13px;word-break:break-word}.profile-id-card.full{grid-column:1/-1}.profile-live{display:inline-flex;align-items:center;gap:4px;color:#087f4e;background:#e9f9f0;border-radius:20px;padding:4px 7px;font-size:9px;font-weight:700}.profile-live i{width:6px;height:6px;border-radius:50%;background:#10ad61;display:inline-block}.profile-row.primary{background:linear-gradient(135deg,#edf5ff,#f7faff);border-color:#dce8fb}.profile-history-wrap{margin:0 10px 80px;background:#fff;border:1px solid #e7edf5;border-radius:14px;padding:11px}.profile-history-wrap h3{font-size:12px;margin-bottom:8px}.profile-tabs{display:grid!important;grid-template-columns:repeat(3,1fr);gap:5px!important}.profile-tab{border:1px solid #e4eaf2!important;background:#f7f9fc!important;border-radius:8px!important;padding:7px 4px!important;font-size:8px!important;color:#6e7888!important}.profile-tab.active{background:#1478ff!important;color:#fff!important;border-color:#1478ff!important}.profile-pane{display:none}.profile-pane.active{display:block}@media(max-width:600px){.task{padding:11px 9px;min-height:72px}.task-icon{width:38px;height:38px;font-size:18px}.task-left b{font-size:11px}.task-left small{font-size:8px}.task-actions{gap:4px}.task .earn{font-size:9px;padding:4px 5px}.task .do{font-size:9px;padding:7px 9px}.task-section-hero{padding:12px;border-radius:13px}.task-section-hero h2{font-size:15px}.task-section-hero p{font-size:8px}.xmpr-brand-banner{padding:13px;border-radius:13px}.xmpr-brand-banner b{font-size:15px}.xmpr-brand-banner p{font-size:8px}.profile-identity-grid{gap:6px}.profile-id-card{padding:8px}.profile-id-card b{font-size:11px}.profile-id-card small{font-size:8px}}
+
+/* XMPR100 reference-style Deposit/VIP/Account UI */
+.deposit-tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#f4f7fb;border:1px solid #e7edf5;padding:4px;border-radius:12px;margin-bottom:10px}
+.deposit-tab{background:transparent;color:#334055;padding:9px;border-radius:9px;font-size:11px;font-weight:800}.deposit-tab.active{background:#1478ff;color:#fff;box-shadow:0 4px 10px #1478ff33}
+.deposit-panel{display:none}.deposit-panel.active{display:block}
+.deposit-info-card{background:linear-gradient(135deg,#eef6ff,#f8fbff);border:1px solid #dce8f8;border-radius:12px;padding:11px;margin-bottom:9px}.deposit-info-card h3{font-size:13px;color:#0b4c9b;margin-bottom:5px}.deposit-info-card p{font-size:9px;color:#68758a;line-height:1.5}.deposit-note-mini{font-size:8px!important;padding:7px!important;margin:7px 0!important;background:#f7fbff!important;border-color:#e1eaf6!important}
+.vip-intro{background:linear-gradient(135deg,#effaf5,#f6fbff);border:1px solid #d9eee4;border-radius:13px;padding:11px;margin-bottom:9px}.vip-intro h3{font-size:13px;color:#16855a;margin-bottom:5px}.vip-intro ul{padding-left:17px;color:#68758a;font-size:9px;line-height:1.7}.vip-grid{display:grid;gap:8px}.vip-card{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid #e4eaf2;border-radius:12px;padding:9px 10px;box-shadow:0 3px 12px #18324a0a}.vip-badge{width:43px;height:43px;border-radius:13px;display:grid;place-items:center;color:#fff;font-size:10px;font-weight:900;background:linear-gradient(135deg,#11a95d,#087b45);box-shadow:0 5px 12px #087b4530;flex:0 0 43px}.vip-card:nth-child(2) .vip-badge{background:linear-gradient(135deg,#168df0,#1260bb)}.vip-card:nth-child(3) .vip-badge{background:linear-gradient(135deg,#ffad19,#ef7400)}.vip-card:nth-child(4) .vip-badge{background:linear-gradient(135deg,#b246e8,#7a25ba)}.vip-card:nth-child(5) .vip-badge{background:linear-gradient(135deg,#ffc928,#e89b00)}.vip-card .vip-main{flex:1;min-width:0}.vip-card .vip-main b{display:block;font-size:12px}.vip-card .vip-main small{display:block;color:#697589;font-size:9px;margin-top:3px}.vip-card .vip-price{font-size:14px;font-weight:900;white-space:nowrap}.vip-buy{background:#1478ff;color:#fff;border-radius:8px;padding:8px 10px;font-size:9px;font-weight:800;white-space:nowrap}.vip-buy:disabled{background:#b9c4d2}.vip-package-note{font-size:8px;color:#8a94a4;margin-top:8px;text-align:center}
+.account-modal{position:fixed;inset:0;background:#0007;z-index:14000;display:none;align-items:flex-end;padding:8px}.account-modal.show{display:flex}.account-sheet{width:min(520px,100%);background:#fff;border-radius:20px 20px 12px 12px;padding:15px;box-shadow:0 16px 50px #0003}.account-head{display:flex;align-items:center;gap:9px;margin-bottom:12px}.account-head h3{font-size:15px}.account-head small{font-size:9px;color:#7d8797}.account-close{margin-left:auto;background:#f0f3f7;border-radius:9px;width:34px;height:34px;font-size:20px}.account-grid{display:grid;gap:9px}.account-grid label{font-size:10px;font-weight:700}.account-grid input{width:100%;padding:10px;border:1px solid #e2e8f0;border-radius:9px;font-size:11px}.account-save{background:#1478ff;color:#fff;padding:10px;border-radius:9px;font-weight:800;font-size:10px}.account-link-box{background:#f6f9fc;border:1px solid #e5ebf2;border-radius:10px;padding:9px;font-size:9px;word-break:break-all;color:#46546a}.account-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}.account-copy{background:#eaf3ff;color:#1267dc;padding:9px;border-radius:9px;font-size:10px;font-weight:700}
+.profile-balance{margin-top:0}
+@media(max-width:600px){.deposit-tabs{margin-bottom:8px}.deposit-tab{padding:8px;font-size:10px}.deposit-info-card{padding:9px}.vip-intro{padding:9px}.vip-card{padding:8px}.vip-badge{width:40px;height:40px;flex-basis:40px}.vip-card .vip-main b{font-size:11px}.vip-card .vip-main small{font-size:8px}.vip-card .vip-price{font-size:13px}.vip-buy{padding:7px 9px;font-size:8px}.account-sheet{padding:13px}}
+
+</style>
+
+<style id="xmpr-reference-design">
+/* XMPR100 reference-style visual refresh */
+.profile-modal{background:#f4f7fb}
+.profile-sheet{max-width:520px;margin:0 auto;background:#f4f7fb}
+.profile-head{padding:14px 14px 16px}
+.profile-referral-card{margin:12px 14px 10px!important;border:1px solid #e3ebf4!important}
+.profile-identity-grid{padding:0 14px 10px}
+.profile-balance{padding:10px 14px}
+.profile-menu{padding:2px 14px 82px}
+.profile-row{border-radius:13px;padding:11px 12px;margin:7px 0}
+.profile-row.primary{background:linear-gradient(135deg,#f0f7ff,#ffffff);border-color:#d7e8ff}
+.profile-row .row-icon{width:34px;height:34px;flex-basis:34px}
+.profile-history-wrap{margin-left:14px;margin-right:14px}
+.xmpr-profile-blue{
+  margin:12px 14px 10px;padding:15px;border-radius:16px;color:#fff;
+  background:linear-gradient(135deg,#08235f,#145fe0 62%,#187eff);
+  box-shadow:0 8px 22px rgba(18,82,190,.18)
+}
+.xmpr-profile-blue .profile-userline{display:flex;align-items:center;gap:11px}
+.xmpr-profile-blue .profile-user-avatar{width:50px;height:50px;border-radius:50%;background:#fff;color:#1455bd;display:grid;place-items:center;font-weight:900;font-size:20px}
+.xmpr-profile-blue .profile-user-name{font-size:16px;font-weight:800}
+.xmpr-profile-blue .profile-user-meta{font-size:9px;opacity:.9;margin-top:3px}
+.xmpr-profile-blue .profile-active{margin-left:auto;background:#20b66b;border-radius:18px;padding:5px 8px;font-size:8px;font-weight:800}
+.xmpr-profile-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:12px}
+.xmpr-profile-stat{background:#ffffff14;border:1px solid #ffffff20;border-radius:9px;padding:8px}
+.xmpr-profile-stat small{display:block;font-size:8px;opacity:.85}
+.xmpr-profile-stat b{display:block;font-size:13px;margin-top:3px}
+.vip-intro{border-radius:14px!important;background:#f0fbf7!important;border:1px solid #d7eee5!important}
+.vip-grid{gap:9px}
+.vip-card{border-radius:14px!important;padding:10px 9px!important;box-shadow:0 3px 12px rgba(20,45,80,.06)}
+.vip-badge{width:42px!important;height:42px!important;border-radius:12px!important}
+.vip-main b{font-size:12px!important}
+.vip-main small{font-size:9px!important}
+.vip-price{font-size:13px!important}
+.vip-buy{padding:8px 11px!important;border-radius:9px!important}
+.task-section-hero{border-radius:14px}
+.task{border-radius:14px}
+.deposit-info-card,.deposit-box,.withdraw-box{border-radius:14px!important}
+.deposit-tabs{border-radius:12px}
+</style>
+
+
+<style>
+.task-fallback-grid{display:grid;gap:9px;margin-top:10px}
+.task-fallback-card{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #e5ebf3;border-radius:14px;padding:10px;box-shadow:0 3px 12px rgba(20,45,80,.05)}
+.task-fallback-icon{width:40px;height:40px;border-radius:12px;background:#eef5ff;display:grid;place-items:center;font-size:19px}
+.task-fallback-main{flex:1;min-width:0}.task-fallback-main b{display:block;font-size:11px}.task-fallback-main small{display:block;color:#8993a2;font-size:8px;margin-top:3px}
+.task-fallback-reward{font-size:9px;color:#087f4e;background:#e9f9f0;padding:5px 7px;border-radius:15px}
+</style>
+</head>
+<body>
+<div id="authScreen">
+  <div id="authCard">
+    <div style="text-align:center;margin-bottom:20px"><div id="authLogo">X</div><h2 style="margin-top:12px">XMPR100</h2><p id="authTitle" style="color:#7a8497;margin-top:5px">আপনার অ্যাকাউন্টে লগইন করুন</p></div>
+    <div class="auth-form">
+      <input id="authEmail" type="email" placeholder="ইমেইল" autocomplete="email">
+      <input id="authPassword" type="password" placeholder="পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)" autocomplete="current-password">
+      <input id="authPassword2" type="password" placeholder="পাসওয়ার্ড আবার লিখুন" autocomplete="new-password" style="display:none">
+      <input id="authReferral" type="text" placeholder="Referral Code (ঐচ্ছিক)" autocomplete="off" style="display:none">
+      <button id="authSubmit" class="auth-primary">লগইন</button>
+      <button id="authToggle" class="auth-link">নতুন অ্যাকাউন্ট? রেজিস্ট্রেশন করুন</button>
+      <button id="authForgot" class="auth-link" type="button">পাসওয়ার্ড ভুলে গেছেন?</button>
+      <div id="authMessage" style="min-height:20px;text-align:center;font-size:13px"></div>
+    </div>
+  </div>
+</div>
+
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="logo">X</div><div><b>XMPR100</b><small>Earn • Task • Grow</small></div></div>
+  <nav class="nav">
+    <button class="active" onclick="showPage('dashboard',this)">🏠 <span>ড্যাশবোর্ড</span></button>
+    <button onclick="showPage('tasks',this)">▣ <span>টাস্ক</span></button>
+    <button onclick="showPage('shop',this)">🛒 <span>শপ</span></button>
+    <button onclick="showPage('deposit',this)">💳 <span>ডিপোজিট</span></button>
+    <button class="admin-only" data-admin-nav onclick="showPage('admin',this)">🛡️ <span>Admin Dashboard</span></button>
+    <button class="admin-only" data-admin-nav onclick="showPage('users',this)">👥 <span>ইউজার ম্যানেজমেন্ট</span></button>
+    <button class="admin-only" data-admin-nav onclick="showPage('tasks',this)">✓ <span>টাস্ক কন্ট্রোল</span></button>
+    <button class="admin-only" data-admin-nav onclick="showPage('depositsAdmin',this)">💳 <span>ডিপোজিট রিকোয়েস্ট</span></button>
+    <button class="admin-only" data-admin-nav onclick="showPage('withdrawalsAdmin',this)">💸 <span>উইথড্র কন্ট্রোল</span></button>
+    <button class="admin-only" data-admin-nav onclick="showPage('transactions',this)">▤ <span>সব হিস্টরি</span></button>
+    <button class="admin-only" data-admin-nav onclick="showPage('settings',this)">⚙ <span>সেটিংস</span></button>
+    <button class="logout" id="logoutBtn">↪ <span>লগআউট</span></button>
+  </nav>
+</aside>
+
+<main class="main">
+<header class="topbar"><h2 id="title">ড্যাশবোর্ড</h2><div class="profile profile-click" id="profileOpen"><span>🔔</span><div class="avatar" id="avatar">U</div><div><b id="userEmail">User</b><div class="online">● Online</div></div></div></header>
+
+<section id="admin" class="page"><div class="welcome"><h1>ড্যাশবোর্ড</h1><p>সব ইউজার, ব্যালেন্স, টাস্ক, ডিপোজিট, উইথড্র ও হিস্টরি এক জায়গা থেকে নিয়ন্ত্রণ করুন।</p></div>
+<div class="stats"><div class="stat"><div class="icon">👤</div><div><small>মোট ইউজার</small><strong id="adminUserCount">0</strong></div></div><div class="stat"><div class="icon">৳</div><div><small>মোট ব্যালেন্স</small><strong id="adminBalanceTotal">৳ 0</strong></div></div><div class="stat"><div class="icon">💳</div><div><small>Pending Deposit</small><strong id="adminPendingDeposits">0</strong></div></div><div class="stat"><div class="icon">💸</div><div><small>Pending Withdraw</small><strong id="adminPendingWithdrawals">0</strong></div></div></div>
+<div class="grid2"><div class="card"><h3>⚡ দ্রুত কন্ট্রোল</h3><div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px"><button class="save" onclick="showPage('users')">👥 Users</button><button class="save" onclick="showPage('tasks')">✓ Tasks</button><button class="save" onclick="showPage('depositsAdmin')">💳 Deposits</button><button class="save" onclick="showPage('withdrawalsAdmin')">💸 Withdrawals</button></div></div><div class="card"><h3>📊 সর্বশেষ হিস্টরি</h3><div id="adminRecentHistory" class="history-list"></div></div></div></section>
+
+<section id="dashboard" class="page active">
+<div class="welcome"><h1 id="welcomeTitle">স্বাগতম! 👋</h1><p>XMPR100 এর সাথে আপনার আয় আরও বাড়ান</p></div>
+<div class="stats">
+<div class="stat"><div class="icon">👤</div><div><small>মোট ইউজার</small><strong id="userCount">0</strong><span class="up">+12% আজ</span></div></div>
+<div class="stat"><div class="icon">▣</div><div><small>মোট ডিপোজিট</small><strong id="depositTotal">৳ 0</strong><span class="up">+8% আজ</span></div></div>
+<div class="stat"><div class="icon">৳</div><div><small>মোট উইথড্র</small><strong id="withdrawTotal">৳ 0</strong><span class="up">+5% আজ</span></div></div>
+<div class="stat"><div class="icon">✓</div><div><small>মোট টাস্ক</small><strong id="taskCount">5</strong><span class="up">প্রতিদিন ৫টি</span></div></div>
+</div>
+<div class="grid2">
+<div class="card"><h3>আয়ের গ্রাফ (শেষ ৭ দিন)</h3><div class="chart"><div class="txrow"><span>Firestore-এর বাস্তব ডাটা যুক্ত হলে এখানে রিপোর্ট দেখাবে</span></div></div></div>
+<div class="card"><h3>সাম্প্রতিক লেনদেন</h3><div id="recentTransactions" class="tx"><div class="txrow"><span>Firestore থেকে বাস্তব লেনদেন লোড হবে</span><span class="tag">Live</span></div></div>
+</div></div>
+</div>
+<div class="xmpr-brand-banner"><div><b>XMPR100 — ছোট কাজ, বড় আয়!</b><p>টাস্ক সম্পন্ন করুন, রিওয়ার্ড সংগ্রহ করুন এবং আপনার ব্যালেন্স লাইভ দেখুন।</p></div></div><div class="deposit-dashboard"><div class="deposit-hero"><h3>💳 দ্রুত ডিপোজিট</h3><p>নগদ Send Money করার পর Amount ও Transaction ID দিয়ে রিকোয়েস্ট পাঠান। Admin যাচাই করার পর ব্যালেন্সে যোগ হবে।</p><div class="deposit-number">01920771637</div><button class="copy-btn" onclick="copyEnhancedNagad()">নগদ নম্বর কপি করুন</button></div><div class="deposit-side"><h3>ডিপোজিট সারাংশ</h3><div class="profile-mini"><small>বর্তমান ব্যালেন্স</small><strong id="dashBalance">৳ 0</strong></div><div class="profile-mini" style="margin-top:8px"><small>মোট ডিপোজিট</small><strong id="dashDepositTotal">৳ 0</strong></div><button class="quick-deposit" onclick="showPage('deposit',document.querySelector('.nav button:nth-child(4)'))">ডিপোজিট উইন্ডো খুলুন →</button></div></div><div class="card" style="margin-top:16px"><h3>সাম্প্রতিক ডিপোজিট</h3><div id="dashDepositHistory" class="history-list"></div></div>
+<div class="card" style="margin-top:16px">
+  <h3>📚 সম্পূর্ণ হিস্টরি</h3>
+  <p style="color:#7a8497;font-size:13px;margin-bottom:12px">Home থেকেই আপনার Task, Login এবং সকল Transaction-এর ইতিহাস দেখা যাবে।</p>
+  <div class="profile-tabs" style="margin-top:0">
+    <button class="profile-tab active home-history-tab" data-home-pane="homeTaskHistory">✓ Task History</button>
+    <button class="profile-tab home-history-tab" data-home-pane="homeLoginHistory">🔐 Login History</button>
+    <button class="profile-tab home-history-tab" data-home-pane="homeTransactionHistory">💳 All Transactions</button>
+  </div>
+  <div id="homeTaskHistory" class="profile-pane active"><div id="homeTaskHistoryList" class="history-list"></div></div>
+  <div id="homeLoginHistory" class="profile-pane"><div id="homeLoginHistoryList" class="history-list"></div></div>
+  <div id="homeTransactionHistory" class="profile-pane"><div id="homeTransactionHistoryList" class="history-list"></div></div>
+</div>
+</section>
+
+<section id="tasks" class="page"><div class="welcome"><h1>টাস্ক</h1><p>সহজ কাজ সম্পন্ন করুন এবং রিওয়ার্ড সংগ্রহ করুন</p></div><div class="task-section-hero"><h2>🎯 আজকের Earn Tasks</h2><p>যেকোনো টাস্কে চাপ দিলে বিস্তারিত দেখাবে। Go চাপলে নির্ধারিত লিংক খুলবে এবং এরপর কাজ সম্পন্ন করে রিওয়ার্ড ক্লেইম করতে পারবেন।</p></div><div class="card admin-only" data-admin-panel style="margin-bottom:15px"><h3>নতুন টাস্ক যোগ করুন</h3><div class="settings"><div class="field"><label>টাইটেল</label><input id="newTaskTitle" placeholder="Task title"></div><div class="field"><label>বিবরণ</label><input id="newTaskDesc" placeholder="Task description"></div><div class="field"><label>Reward (৳)</label><input id="newTaskReward" type="number" min="0" step="1"></div><div class="field"><label>Link</label><input id="newTaskUrl" placeholder="https://..."></div><button class="save" id="addTaskBtn">টাস্ক যোগ করুন</button></div></div><div class="card admin-only" data-admin-panel style="margin-top:10px"><h3>বর্তমান Firebase Tasks</h3><div id="adminTaskManager" class="history-list"></div></div><div class="task-list"></div></section>
+
+<section id="shop" class="page"><div class="welcome"><h1>VIP কিনুন</h1><p>আপনার পছন্দের VIP প্যাকেজ নির্বাচন করুন</p></div>
+<div class="vip-intro"><h3>VIP নিলে আপনি পাবেন</h3><ul><li>VIP স্ট্যাটাস ও নির্ধারিত মেয়াদ</li><li>VIP প্যাকেজ অনুযায়ী রিওয়ার্ড সিস্টেম</li><li>অ্যাকাউন্টে লাইভ স্ট্যাটাস দেখা যাবে</li><li>প্রতিটি প্যাকেজের আলাদা মেয়াদ ও মূল্য</li></ul></div>
+<div class="vip-grid" id="vipGrid">
+<div class="vip-card"><div class="vip-badge">VIP<br>1</div><div class="vip-main"><b>VIP 1</b><small>মেয়াদ: ১০ দিন</small></div><div class="vip-price">৳ 100</div><button class="vip-buy" data-vip-index="0">কিনুন</button></div>
+<div class="vip-card"><div class="vip-badge">VIP<br>2</div><div class="vip-main"><b>VIP 2</b><small>মেয়াদ: ২০ দিন</small></div><div class="vip-price">৳ 200</div><button class="vip-buy" data-vip-index="1">কিনুন</button></div>
+<div class="vip-card"><div class="vip-badge">VIP<br>3</div><div class="vip-main"><b>VIP 3</b><small>মেয়াদ: ৩০ দিন</small></div><div class="vip-price">৳ 300</div><button class="vip-buy" data-vip-index="2">কিনুন</button></div>
+<div class="vip-card"><div class="vip-badge">VIP<br>4</div><div class="vip-main"><b>VIP 4</b><small>মেয়াদ: ৪৫ দিন</small></div><div class="vip-price">৳ 500</div><button class="vip-buy" data-vip-index="3">কিনুন</button></div>
+<div class="vip-card"><div class="vip-badge">VIP<br>5</div><div class="vip-main"><b>VIP 5</b><small>মেয়াদ: ৬০ দিন</small></div><div class="vip-price">৳ 1000</div><button class="vip-buy" data-vip-index="4">কিনুন</button></div>
+</div><div class="vip-package-note">প্যাকেজ কিনতে আপনার অ্যাকাউন্টের পর্যাপ্ত ব্যালেন্স প্রয়োজন।</div><div id="vipStatus" style="margin-top:8px;font-size:10px;color:#6f7b8e"></div>
+</section>
+
+<section id="deposit" class="page"><div class="welcome"><h1>ডিপোজিট / উইথড্র</h1><p>শুধু ডিপোজিট ও উইথড্র সিস্টেম এখানে থাকবে।</p></div>
+<div class="deposit-tabs"><button class="deposit-tab active" data-deposit-tab="depositPanel">ডিপোজিট</button><button class="deposit-tab" data-deposit-tab="withdrawPanel">উইথড্র</button></div>
+<div id="depositPanel" class="deposit-panel active"><div class="deposit-info-card"><h3>👤 ডিপোজিট ইনফো</h3><p>নগদ/বিকাশ/রকেট/উপায়ে টাকা পাঠিয়ে নিচের তথ্য দিয়ে রিকোয়েস্ট করুন।</p><div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px"><b class="nagad-number" id="nagadNumber">01920771637</b><button type="button" class="copy-btn" id="copyNagad">কপি</button></div></div>
+<div class="card deposit-box"><h3>ডিপোজিট করুন</h3><div class="field"><label>Amount (৳)</label><input id="depositAmount" type="number" min="100" step="1" placeholder="যেমন: 100"></div><div class="field"><label>Transaction ID</label><input id="depositTrx" type="text" maxlength="100" placeholder="Transaction ID দিন"></div><button type="button" class="save" id="submitDeposit">সাবমিট করুন</button><div id="depositMessage"></div><div class="notice deposit-note-mini"><b>নোট:</b> সঠিক Amount ও Transaction ID দিন, তা হলে ডিপোজিট রিকোয়েস্ট দ্রুত যাচাই করা যাবে।</div></div></div>
+<div id="withdrawPanel" class="deposit-panel"><div class="card withdraw-box"><h3>উইথড্র করুন</h3><div class="field"><label>উইথড্র পদ্ধতি</label><select id="withdrawMethod" style="padding:9px;border:1px solid var(--border);border-radius:8px"><option value="Nagad">নগদ</option><option value="bKash">বিকাশ</option></select></div><div class="field"><label>উইথড্র নম্বর</label><input id="withdrawNumber" type="text" maxlength="20" placeholder="01XXXXXXXXX"></div><div class="field"><label>উইথড্র পরিমাণ (৳)</label><input id="withdrawAmount" type="number" min="150" step="1" placeholder="সর্বনিম্ন ৳150"></div><button type="button" class="save" id="submitWithdraw">উইথড্র রিকোয়েস্ট পাঠান</button><div id="withdrawMessage"></div><div class="notice deposit-note-mini"><b>নোট:</b> সর্বনিম্ন উইথড্র ৳150। Admin যাচাই করার পর রিকোয়েস্ট প্রসেস হবে।</div></div></div>
+<div class="card admin-only" data-admin-panel style="margin-top:10px"><h3>ডিপোজিট রিকোয়েস্ট</h3><div style="overflow:auto"><table class="table"><thead><tr><th>User</th><th>Amount</th><th>Trx ID</th><th>Status</th><th>Action</th></tr></thead><tbody id="depositsBody"></tbody></table></div></div>
+</section>
+
+<section id="users" class="page"><div class="welcome"><h1>👥 ইউজার ম্যানেজমেন্ট</h1><p>ব্যালেন্স, স্ট্যাটাস, Role এবং বিস্তারিত হিস্টরি নিয়ন্ত্রণ করুন।</p></div><div class="card"><input class="search" placeholder="🔎 Email / UID দিয়ে খুঁজুন..." oninput="filterUsers(this.value)"><div style="overflow:auto"><table class="table"><thead><tr><th>User</th><th>Balance</th><th>Role</th><th>Status</th><th>Action</th></tr></thead><tbody id="usersBody"></tbody></table></div></div></section>
+
+<section id="depositsAdmin" class="page"><div class="welcome"><h1>💳 Deposit Control</h1><p>Pending deposit যাচাই করে Approve/Reject করুন।</p></div><div class="card"><div style="overflow:auto"><table class="table"><thead><tr><th>User</th><th>Amount</th><th>Trx ID</th><th>Date</th><th>Status</th><th>Action</th></tr></thead><tbody id="depositsBody"></tbody></table></div></div></section>
+
+<section id="withdrawalsAdmin" class="page"><div class="welcome"><h1>💸 Withdrawal Control</h1><p>Withdrawal request দেখে Approve/Reject করুন এবং Approve হলে ব্যালেন্স থেকে টাকা কেটে হিস্টরি তৈরি হবে।</p></div><div class="card"><div style="overflow:auto"><table class="table"><thead><tr><th>User</th><th>Amount</th><th>Method</th><th>bKash/Nagad Number</th><th>Date</th><th>Status</th><th>Action</th></tr></thead><tbody id="withdrawalsBody"></tbody></table></div></div></section>
+
+<section id="transactions" class="page"><div class="welcome"><h1>📜 সব লেনদেন ইতিহাস</h1><p>Deposit, Withdrawal, Task, VIP, Referral এবং Admin adjustment সব দেখুন।</p></div><div class="card"><input class="search" placeholder="🔎 Type / UID / status খুঁজুন..." oninput="filterTable('transactionsBody',this.value)"><div style="overflow:auto"><table class="table"><thead><tr><th>Type</th><th>UID</th><th>Amount</th><th>Date</th><th>Status</th></tr></thead><tbody id="transactionsBody"></tbody></table></div></div></section>
+
+<section id="settings" class="page"><div class="welcome"><h1>⚙️ সেটিংস</h1><p>XMPR100 সিস্টেমের সাধারণ সেটিংস।</p></div><div class="card settings"><div class="field"><label>সাইটের নাম</label><input value="XMPR100"></div><div class="field"><label>সাইট URL</label><input value="https://jmd770748-create.github.io/XMPR100/"></div><div class="field"><label>Telegram Bot Token</label><input type="password" value=""></div><div class="field"><label>Telegram Channel</label><input value="@XMPR100"></div><button class="save">সেভ করুন</button></div></section>
+
+<div id="userAdminModal" class="support-modal" onclick="if(event.target===this)closeUserAdmin()"><div class="support-sheet"><div class="support-head"><div class="support-icon">👤</div><div><h3 id="uaTitle">User Control</h3><small id="uaEmail">—</small></div><button class="support-close" onclick="closeUserAdmin()">×</button></div><div class="settings"><input type="hidden" id="uaUid"><div class="field"><label>Balance (৳)</label><input id="uaBalance" type="number" step="0.01"></div><div class="field"><label>Status</label><select id="uaStatus" style="padding:12px;border:1px solid var(--border);border-radius:9px"><option value="active">Active</option><option value="blocked">Blocked</option></select></div><div class="field"><label>Role</label><select id="uaRole" style="padding:12px;border:1px solid var(--border);border-radius:9px"><option value="user">User</option><option value="admin">Admin</option></select></div><div class="field"><label>Balance change reason</label><input id="uaReason" placeholder="যেমন: Manual adjustment"></div><button class="save" onclick="saveUserAdmin()">💾 Save changes</button><button class="save" style="background:#e53935" onclick="closeUserAdmin()">বন্ধ করুন</button></div></div></div>
+</main>
+</div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
+import {
+  getFirestore, collection, doc, getDoc, setDoc, addDoc, updateDoc, deleteDoc,
+  onSnapshot, serverTimestamp, query, orderBy, limit, where, runTransaction
+} from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+import {
+  getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+  sendPasswordResetEmail, signOut, onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA2ZEHWC-h6OpmAcePkoqGcGtwUu_OBHlg",
+  authDomain: "xmpr100.firebaseapp.com",
+  projectId: "xmpr100",
+  storageBucket: "xmpr100.firebasestorage.app",
+  messagingSenderId: "244432612940",
+  appId: "1:244432612940:web:495f7fc7f96e10fe444ee9",
+  measurementId: "G-8LV31BL3M8"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+window.firebaseApp = app;
+window.db = db;
+
+try { window.analytics = getAnalytics(app); } catch(e) {}
+
+const $ = s => document.querySelector(s);
+const money = n => "৳ " + Number(n || 0).toLocaleString("en-US");
+const esc = s => String(s ?? "").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;", "'":"&#039;"}[m]));
+
+const auth = getAuth(app);
+window.auth = auth;
+let currentUser = null;
+let currentRole = 'user';
+let registerMode = false;
+const ADMIN_PAGES = new Set(['admin','users','tasks','depositsAdmin','withdrawalsAdmin','transactions','settings']);
+
+function setStatus(msg,ok=true){
+  let el=$('#firebaseStatus');
+  if(!el){el=document.createElement('div');el.id='firebaseStatus';el.style.cssText='position:fixed;right:18px;bottom:18px;z-index:9998;padding:11px 15px;border-radius:10px;background:#fff;border:1px solid #e8edf5;box-shadow:0 5px 20px #14213b22;font-size:13px';document.body.appendChild(el);}
+  el.textContent=msg;el.style.color=ok?'#087f4e':'#c62828';clearTimeout(window.__st);window.__st=setTimeout(()=>el.remove(),3500);
+}
+function authMessage(msg,ok=false){const e=$('#authMessage');e.textContent=msg||'';e.style.color=ok?'#087f4e':'#c62828';}
+function setAuthMode(reg){
+  registerMode=reg;
+  $('#authTitle').textContent=reg?'নতুন অ্যাকাউন্ট তৈরি করুন':'আপনার অ্যাকাউন্টে লগইন করুন';
+  $('#authSubmit').textContent=reg?'রেজিস্টার':'লগইন';
+  $('#authPassword2').style.display=reg?'block':'none';
+  $('#authReferral').style.display=reg?'block':'none';
+  if(reg){ const r=new URLSearchParams(location.search).get('ref'); if(r) $('#authReferral').value=r; }
+  $('#authForgot').style.display=reg?'none':'block';
+  $('#authToggle').textContent=reg?'আগে থেকেই অ্যাকাউন্ট আছে? লগইন করুন':'নতুন অ্যাকাউন্ট? রেজিস্ট্রেশন করুন';
+  authMessage('');
+}
+function friendlyAuthError(code){return ({
+  'auth/email-already-in-use':'এই ইমেইল দিয়ে ইতিমধ্যে অ্যাকাউন্ট আছে।',
+  'auth/invalid-email':'ইমেইল ঠিকানা সঠিক নয়।',
+  'auth/invalid-credential':'ইমেইল বা পাসওয়ার্ড সঠিক নয়।',
+  'auth/weak-password':'পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।',
+  'auth/too-many-requests':'অনেকবার চেষ্টা হয়েছে। কিছুক্ষণ পরে আবার চেষ্টা করুন।',
+  'auth/network-request-failed':'ইন্টারনেট সংযোগ পরীক্ষা করুন।'
+})[code]||'অনুরোধটি সম্পন্ন করা যায়নি।';}
+async function recordLogin(user,eventType='Login'){
+  try{
+    await addDoc(collection(db,'loginHistory'),{
+      uid:user.uid,email:user.email||'',event:eventType,loginAt:serverTimestamp(),
+      userAgent:navigator.userAgent.slice(0,300)
+    });
+  }catch(e){console.warn('Login history save failed:',e);}
+}
+async function forgotPassword(){
+  const email=$('#authEmail').value.trim();
+  if(!email){authMessage('আগে আপনার ইমেইল লিখুন।');$('#authEmail').focus();return;}
+  try{
+    await sendPasswordResetEmail(auth,email);
+    authMessage('পাসওয়ার্ড রিসেট করার লিংক আপনার ইমেইলে পাঠানো হয়েছে।',true);
+  }catch(e){authMessage(friendlyAuthError(e.code));}
+}
+
+async function ensureUserDoc(user){
+  const ref=doc(db,'users',user.uid), snap=await getDoc(ref);
+  if(!snap.exists()) await setDoc(ref,{uid:user.uid,email:user.email||'',role:'user',balance:0,status:'Active',referralCode:user.uid,referredBy:'',referralProcessed:false,directReferrals:0,createdAt:serverTimestamp()});
+  const latest=await getDoc(ref);return latest.data()||{};
+}
+
+async function processReferral(user){
+  const userRef=doc(db,'users',user.uid);
+  const userSnap=await getDoc(userRef);
+  const u=userSnap.data()||{};
+  if(u.referralProcessed) return;
+  const refCode=(u.referredBy||'').trim();
+  if(!refCode || refCode===user.uid){ await updateDoc(userRef,{referralProcessed:true}); return; }
+  const directRef=doc(db,'users',refCode);
+  const directSnap=await getDoc(directRef);
+  if(!directSnap.exists()){ await updateDoc(userRef,{referralProcessed:true}); return; }
+  const direct=directSnap.data()||{};
+  const secondCode=(direct.referredBy||'').trim();
+  let thirdCode='';
+  if(secondCode){ const secondSnap=await getDoc(doc(db,'users',secondCode)); if(secondSnap.exists()) thirdCode=(secondSnap.data()?.referredBy||'').trim(); }
+  await runTransaction(db,async(tx)=>{
+    const freshUser=await tx.get(userRef);
+    if((freshUser.data()||{}).referralProcessed) return;
+    const dSnap=await tx.get(directRef);
+    if(!dSnap.exists()) { tx.update(userRef,{referralProcessed:true}); return; }
+    const d=dSnap.data()||{};
+    tx.update(directRef,{balance:Number(d.balance||0)+25,directReferrals:Number(d.directReferrals||0)+1,updatedAt:serverTimestamp()});
+    tx.set(doc(db,'transactions',user.uid+'_ref_l1_'+Date.now()),{uid:directRef,sourceUid:user.uid,type:'Referral Level 1 Reward',amount:25,status:'Approved',level:1,createdAt:serverTimestamp()});
+    if(thirdCode && thirdCode!==user.uid && thirdCode!==refCode){
+      const thirdRef=doc(db,'users',thirdCode), tSnap=await tx.get(thirdRef);
+      if(tSnap.exists()){ const t=tSnap.data()||{}; tx.update(thirdRef,{balance:Number(t.balance||0)+15,updatedAt:serverTimestamp()}); tx.set(doc(db,'transactions',user.uid+'_ref_l3_'+Date.now()),{uid:thirdCode,sourceUid:user.uid,type:'Referral Level 3 Reward',amount:15,status:'Approved',level:3,createdAt:serverTimestamp()}); }
+    }
+    tx.update(userRef,{referralProcessed:true,updatedAt:serverTimestamp()});
+  });
+}
+
+function applyRoleUI(){
+  document.querySelectorAll('[data-admin-nav],[data-admin-panel]').forEach(el=>el.style.display=currentRole==='admin'?'':'none');
+}
+window.showPage=function(id,btn){
+  if(ADMIN_PAGES.has(id)&&currentRole!=='admin'){setStatus('এই অংশটি শুধু Admin-এর জন্য',false);return;}
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));const page=document.getElementById(id);if(page)page.classList.add('active');
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');
+  const titles={dashboard:'ড্যাশবোর্ড',tasks:'টাস্ক',shop:'শপ',deposit:'ডিপোজিট',admin:'ড্যাশবোর্ড',users:'ইউজার ম্যানেজমেন্ট',depositsAdmin:'Deposit Control',withdrawalsAdmin:'Withdrawal Control',transactions:'সব হিস্টরি',settings:'সেটিংস'};$('#title').textContent=titles[id]||'XMPR100';if(id==='dashboard')renderEnhanced();window.scrollTo({top:0,behavior:'smooth'});
+};
+window.filterUsers=function(q){q=q.toLowerCase();document.querySelectorAll('#usersBody tr').forEach(r=>r.style.display=r.innerText.toLowerCase().includes(q)?'':'none');};
+
+async function submitAuth(){
+  const email=$('#authEmail').value.trim(),pass=$('#authPassword').value,pass2=$('#authPassword2').value;
+  if(!email||!pass){authMessage('ইমেইল ও পাসওয়ার্ড দিন।');return;}
+  if(registerMode&&pass!==pass2){authMessage('দুইটি পাসওয়ার্ড এক নয়।');return;}
+  if(registerMode&&pass.length<6){authMessage('পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।');return;}
+  $('#authSubmit').disabled=true;
+  try{
+    if(registerMode){
+      const c=await createUserWithEmailAndPassword(auth,email,pass);
+      const refCode=$('#authReferral').value.trim() || new URLSearchParams(location.search).get('ref') || '';
+      await ensureUserDoc(c.user);
+      if(refCode && refCode!==c.user.uid) await updateDoc(doc(db,'users',c.user.uid),{referredBy:refCode});
+      await processReferral(c.user);
+      await recordLogin(c.user,'Registration/Login');
+      authMessage('রেজিস্ট্রেশন সফল হয়েছে।',true);
+    }else{
+      const c=await signInWithEmailAndPassword(auth,email,pass);
+      await recordLogin(c.user,'Login');
+    }
+  }catch(e){console.error(e);authMessage(friendlyAuthError(e.code));}
+  finally{$('#authSubmit').disabled=false;}
+}
+$('#authSubmit').onclick=submitAuth;
+$('#authToggle').onclick=()=>setAuthMode(!registerMode);
+$('#authForgot').onclick=forgotPassword;
+$('#logoutBtn').onclick=()=>signOut(auth);
+
+const DAILY_TASKS=[
+ {id:'daily-watch-ad',title:'Watch Ads',description:'বিজ্ঞাপন দেখুন এবং টাস্ক সম্পন্ন করুন',icon:'▶'},
+ {id:'daily-telegram',title:'Join Telegram',description:'আমাদের Telegram চ্যানেলে যোগ দিন',icon:'✈️'},
+ {id:'daily-survey',title:'Complete Survey',description:'সহজ প্রশ্নের উত্তর দিন',icon:'✓'},
+ {id:'daily-website',title:'Visit Website',description:'নির্দিষ্ট পেজ ভিজিট করুন',icon:'🌐'},
+ {id:'daily-game',title:'Play Game',description:'গেম খেলুন এবং টাস্ক সম্পন্ন করুন',icon:'🎮'}
+];
+async function claimDailyTask(btn){
+  if(!currentUser){setStatus('আগে Login করুন',false);return;}
+  const taskId=btn.dataset.taskId, title=btn.dataset.title;
+  const today=new Date().toISOString().slice(0,10);
+  btn.disabled=true; btn.textContent='...';
+  try{
+    const claimRef=doc(db,'dailyTaskClaims',currentUser.uid+'_'+today+'_'+taskId);
+    const userRef=doc(db,'users',currentUser.uid);
+    await runTransaction(db,async(tx)=>{
+      const claimSnap=await tx.get(claimRef);
+      if(claimSnap.exists())throw new Error('আজকের এই টাস্ক ইতিমধ্যে সম্পন্ন করেছেন');
+      const userSnap=await tx.get(userRef);
+      if(!userSnap.exists())throw new Error('User profile পাওয়া যায়নি');
+      const balance=Number(userSnap.data().balance||0)+1.5;
+      tx.update(userRef,{balance,updatedAt:serverTimestamp()});
+      tx.set(claimRef,{uid:currentUser.uid,taskId,title,reward:1.5,date:today,status:'Approved',createdAt:serverTimestamp()});
+      tx.set(doc(db,'transactions',currentUser.uid+'_task_'+today+'_'+taskId),{uid:currentUser.uid,type:'Task Reward',taskId,taskTitle:title,amount:1.5,status:'Approved',date:today,createdAt:serverTimestamp()});
+    });
+    enhancedBalance+=1.5; renderEnhanced(); setStatus('টাস্ক সম্পন্ন — ৳1.50 ব্যালেন্সে যোগ হয়েছে');
+    btn.textContent='সম্পন্ন ✓';
+  }catch(e){setStatus(e.message||'টাস্ক সম্পন্ন করা যায়নি',false);btn.disabled=false;btn.textContent='কাজ করুন';}
+}
+async function renderTasks(items){const box=document.querySelector('#tasks .task-list');if(!box)return;if(currentRole==='admin'){const m=$('#adminTaskManager');if(m){const all=(items||[]).filter(x=>x.id&&!String(x.id).startsWith('daily-'));m.innerHTML=all.map(t=>'<div class="history-row"><div><b>'+esc(t.title||'Task')+'</b><small>'+esc(t.description||'')+' • Reward '+money(t.reward||1.5)+'</small></div><span><button class="do" data-task-delete="'+esc(t.id)+'" style="background:#e53935">Delete</button></span></div>').join('')||'<div class="notice">Firebase task নেই।</div>';m.querySelectorAll('[data-task-delete]').forEach(b=>b.onclick=async()=>{if(!confirm('এই Task delete করবেন?'))return;try{await deleteDoc(doc(db,'tasks',b.dataset.taskDelete));setStatus('Task deleted');}catch(e){setStatus(e.message,false);}});}}const dbItems=(items||[]).filter(x=>x.active!==false).slice(0,5),merged=[...dbItems];for(const d of DAILY_TASKS){if(merged.length>=5)break;if(!merged.some(x=>x.id===d.id))merged.push({...d,reward:1.5,active:true});}const tasks=merged.slice(0,5).map(t=>({...t,reward:1.5}));box.innerHTML=tasks.map(t=>{const id=esc(t.id),title=esc(t.title||'Daily Task'),desc=esc(t.description||''),icon=esc(t.icon||'▣');return `<div class="task" data-task-open="${id}"><div class="task-left"><div class="task-icon">${icon}</div><div><b>${title}</b><small>${desc}</small></div></div><div class="task-actions"><span class="earn">+৳ 1.50</span><button class="do" data-task-open-btn="${id}">Go</button></div></div>`;}).join('');const today=new Date().toISOString().slice(0,10);let claims=[];if(currentUser)claims=await Promise.all(tasks.map(t=>getDoc(doc(db,'dailyTaskClaims',currentUser.uid+'_'+today+'_'+t.id))));box.querySelectorAll('[data-task-open-btn]').forEach(b=>b.onclick=(ev)=>{ev.stopPropagation();openTaskDetail(tasks.find(x=>x.id===b.dataset.taskOpenBtn));});box.querySelectorAll('[data-task-open]').forEach(b=>b.onclick=()=>openTaskDetail(tasks.find(x=>x.id===b.dataset.taskOpen)));box.querySelectorAll('[data-task-open-btn]').forEach((b,i)=>{if(claims[i]?.exists()){b.disabled=true;b.textContent='Done ✓';}});window.__renderTasksReload=()=>renderTasks(tasks);}
+function renderUsers(items){
+  const body=$('#usersBody');if(!body)return;
+  body.innerHTML=items.map(u=>{const uid=u.uid||u.id;return `<tr><td><b>${esc(u.email||u.name||'')}</b><small style="display:block;color:#8993a2">${esc(uid)}</small></td><td>${money(u.balance||0)}</td><td>${esc(u.role||'user')}</td><td><span class="status">${esc(u.status||'active')}</span></td><td><button class="do" data-user-edit="${esc(uid)}">Edit</button></td></tr>`}).join('')||'<tr><td colspan="5">কোনো ইউজার নেই</td></tr>';
+  body.querySelectorAll('[data-user-edit]').forEach(b=>b.onclick=()=>openUserAdmin(b.dataset.userEdit));
+}
+function filterTable(id,q){q=String(q||'').toLowerCase();document.querySelectorAll('#'+id+' tr').forEach(r=>r.style.display=r.innerText.toLowerCase().includes(q)?'':'none');}
+async function openUserAdmin(uid){if(currentRole!=='admin')return;try{const s=await getDoc(doc(db,'users',uid));if(!s.exists())throw new Error('User not found');const u=s.data()||{};$('#uaUid').value=uid;$('#uaTitle').textContent='User Control';$('#uaEmail').textContent=u.email||uid;$('#uaBalance').value=Number(u.balance||0);$('#uaStatus').value=u.status||'active';$('#uaRole').value=u.role||'user';$('#uaReason').value='';$('#userAdminModal').classList.add('show');}catch(e){setStatus(e.message,false);}}
+function closeUserAdmin(){$('#userAdminModal')?.classList.remove('show');}
+async function saveUserAdmin(){if(currentRole!=='admin')return;const uid=$('#uaUid').value,newBalance=Number($('#uaBalance').value),status=$('#uaStatus').value,role=$('#uaRole').value,reason=$('#uaReason').value.trim()||'Admin adjustment';if(!uid||!Number.isFinite(newBalance)||newBalance<0){setStatus('সঠিক balance দিন',false);return;}try{await runTransaction(db,async(tx)=>{const ref=doc(db,'users',uid),snap=await tx.get(ref);if(!snap.exists())throw new Error('User not found');const old=Number(snap.data().balance||0),delta=newBalance-old;tx.update(ref,{balance:newBalance,status,role,updatedAt:serverTimestamp()});if(delta!==0)tx.set(doc(db,'transactions','admin_adj_'+uid+'_'+Date.now()),{uid,type:'Admin Balance Adjustment',amount:delta,balanceBefore:old,balanceAfter:newBalance,reason,status:'Approved',approvedBy:currentUser.uid,createdAt:serverTimestamp()});});closeUserAdmin();setStatus('User control update হয়েছে');}catch(e){setStatus('Update ব্যর্থ: '+e.message,false);}}
+function renderTransactions(items){const body=$('#transactionsBody');if(!body)return;body.innerHTML=items.map(t=>{let date='—';if(t.createdAt?.toDate)date=t.createdAt.toDate().toLocaleString('bn-BD');return `<tr><td>${esc(t.type||'Transaction')}</td><td>${esc(t.uid||'')}</td><td>${money(t.amount||0)}</td><td>${date}</td><td><span class="${t.status==='Approved'?'approved':'pending'}">${esc(t.status||'Pending')}</span></td></tr>`}).join('')||'<tr><td colspan="5">কোনো লেনদেন নেই</td></tr>';}
+function renderDeposits(items){const body=$('#depositsBody');if(!body)return;body.innerHTML=items.map(d=>`<tr><td>${esc(d.email||d.uid||'')}</td><td>${money(d.amount)}</td><td>${esc(d.transactionId||'')}</td><td>${d.createdAt?.toDate?d.createdAt.toDate().toLocaleString('bn-BD'):'—'}</td><td><span class="${d.status==='Approved'?'approved':'pending'}">${esc(d.status||'Pending')}</span></td><td>${d.status==='Pending'?`<button class="do" data-approve="${esc(d.id)}">Approve</button> <button class="do" style="background:#e53935" data-reject-dep="${esc(d.id)}">Reject</button>`:'—'}</td></tr>`).join('')||'<tr><td colspan="6">কোনো ডিপোজিট নেই</td></tr>';body.querySelectorAll('[data-approve]').forEach(b=>b.onclick=()=>approveDeposit(b.dataset.approve));body.querySelectorAll('[data-reject-dep]').forEach(b=>b.onclick=()=>rejectDeposit(b.dataset.rejectDep));}
+async function rejectDeposit(id){if(currentRole!=='admin')return;try{await updateDoc(doc(db,'deposits',id),{status:'Rejected',rejectedAt:serverTimestamp(),rejectedBy:currentUser.uid});setStatus('Deposit rejected');}catch(e){setStatus(e.message,false);}}
+async function approveDeposit(id){if(currentRole!=='admin')return;try{await runTransaction(db,async(tx)=>{const depRef=doc(db,'deposits',id),depSnap=await tx.get(depRef);if(!depSnap.exists())throw new Error('Deposit not found');const d=depSnap.data();if(d.status!=='Pending')throw new Error('Already processed');const userRef=doc(db,'users',d.uid),userSnap=await tx.get(userRef);if(!userSnap.exists())throw new Error('User not found');const balance=Number(userSnap.data().balance||0)+Number(d.amount||0);tx.update(depRef,{status:'Approved',approvedAt:serverTimestamp(),approvedBy:currentUser.uid});tx.update(userRef,{balance,updatedAt:serverTimestamp()});tx.set(doc(db,'transactions',d.transactionId+'_'+id),{uid:d.uid,type:'Deposit',amount:Number(d.amount||0),status:'Approved',transactionId:d.transactionId,createdAt:serverTimestamp(),approvedBy:currentUser.uid});});setStatus('ডিপোজিট Approved এবং ব্যালেন্স আপডেট হয়েছে');}catch(e){setStatus('Approve ব্যর্থ: '+e.message,false);}}
+function getWithdrawalNumber(w){
+  return String(w?.number || w?.withdrawNumber || w?.recipientNumber || w?.accountNumber || w?.bkashNumber || w?.bKashNumber || w?.phone || '').trim();
+}
+function renderWithdrawals(items){
+  const body=$('#withdrawalsBody');if(!body)return;
+  body.innerHTML=items.map(w=>{
+    const number=getWithdrawalNumber(w);
+    return `<tr><td>${esc(w.email||w.uid||'')}</td><td>${money(w.amount)}</td><td>${esc(w.method||'')}</td><td><b>${esc(number||'—')}</b></td><td>${w.createdAt?.toDate?w.createdAt.toDate().toLocaleString('bn-BD'):'—'}</td><td><span class="${w.status==='Approved'?'approved':'pending'}">${esc(w.status||'Pending')}</span></td><td>${w.status==='Pending'?`<button class="do" data-approve-w="${esc(w.id)}">Approve</button> <button class="do" style="background:#e53935" data-reject-w="${esc(w.id)}">Reject</button>`:'—'}</td></tr>`;
+  }).join('')||'<tr><td colspan="7">কোনো উইথড্র নেই</td></tr>';
+  body.querySelectorAll('[data-approve-w]').forEach(b=>b.onclick=()=>approveWithdrawal(b.dataset.approveW));
+  body.querySelectorAll('[data-reject-w]').forEach(b=>b.onclick=()=>rejectWithdrawal(b.dataset.rejectW));
+}
+async function rejectWithdrawal(id){if(currentRole!=='admin')return;try{await updateDoc(doc(db,'withdrawals',id),{status:'Rejected',rejectedAt:serverTimestamp(),rejectedBy:currentUser.uid});setStatus('Withdrawal rejected');}catch(e){setStatus(e.message,false);}}
+async function approveWithdrawal(id){if(currentRole!=='admin')return;try{await runTransaction(db,async(tx)=>{const ref=doc(db,'withdrawals',id),snap=await tx.get(ref);if(!snap.exists())throw new Error('Withdrawal not found');const w=snap.data();if(w.status!=='Pending')throw new Error('Already processed');const uref=doc(db,'users',w.uid),us=await tx.get(uref);if(!us.exists())throw new Error('User not found');const bal=Number(us.data().balance||0),amount=Number(w.amount||0);if(amount>bal)throw new Error('User balance is not enough');tx.update(ref,{status:'Approved',approvedAt:serverTimestamp(),approvedBy:currentUser.uid});tx.update(uref,{balance:bal-amount,updatedAt:serverTimestamp()});tx.set(doc(db,'transactions','withdraw_'+id),{uid:w.uid,type:'Withdrawal',amount:-amount,status:'Approved',method:w.method,number:getWithdrawalNumber(w),createdAt:serverTimestamp(),approvedBy:currentUser.uid});});setStatus('Withdrawal Approved এবং balance কাটা হয়েছে');}catch(e){setStatus('Approve ব্যর্থ: '+e.message,false);}}
+function bindSettings(){const inputs=document.querySelectorAll('#settings input');if(inputs.length<4)return;const [siteName,siteUrl,botToken,channel]=inputs;$('#settings .save').onclick=async()=>{try{await setDoc(doc(db,'settings','main'),{siteName:siteName.value.trim(),siteUrl:siteUrl.value.trim(),telegramChannel:channel.value.trim(),updatedAt:serverTimestamp()},{merge:true});setStatus('সেটিংস সেভ হয়েছে');}catch(e){setStatus('Settings save ব্যর্থ: '+e.message,false);}};botToken.value='';botToken.placeholder='নিরাপত্তার জন্য Bot Token public HTML-এ রাখবেন না';}
+
+function startRealtime(){
+  onSnapshot(collection(db,'tasks'),snap=>{renderTasks(snap.docs.map(d=>({id:d.id,...d.data()})));$('#taskCount').textContent='5';},e=>{$('#taskCount').textContent='5';});
+  // Home-এর ৪টি global counter: Users, approved Deposits, approved Withdrawals, Daily Tasks.
+  onSnapshot(collection(db,'users'),snap=>{const el=$('#userCount');if(el)el.textContent=snap.size.toLocaleString('en-US');});
+  onSnapshot(collection(db,'deposits'),snap=>{const total=snap.docs.filter(d=>(d.data()?.status||'').toLowerCase()==='approved').reduce((a,d)=>a+Number(d.data()?.amount||0),0);const el=$('#depositTotal');if(el)el.textContent=money(total);});
+  onSnapshot(collection(db,'withdrawals'),snap=>{const total=snap.docs.filter(d=>(d.data()?.status||'').toLowerCase()==='approved').reduce((a,d)=>a+Number(d.data()?.amount||0),0);const el=$('#withdrawTotal');if(el)el.textContent=money(total);});
+  $('#taskCount').textContent='5';
+  if(currentRole==='admin'){
+    onSnapshot(collection(db,'users'),snap=>{const users=snap.docs.map(d=>({id:d.id,...d.data()}));renderUsers(users);$('#userCount').textContent=users.length.toLocaleString('en-US');},e=>setStatus('Users পড়তে সমস্যা: '+e.message,false));
+    onSnapshot(query(collection(db,'transactions'),orderBy('createdAt','desc'),limit(100)),snap=>renderTransactions(snap.docs.map(d=>({id:d.id,...d.data()}))),e=>setStatus('Transactions পড়তে সমস্যা: '+e.message,false));
+    onSnapshot(query(collection(db,'deposits'),orderBy('createdAt','desc'),limit(100)),snap=>{const items=snap.docs.map(d=>({id:d.id,...d.data()}));renderDeposits(items);const p=items.filter(x=>x.status==='Pending').length;$('#adminPendingDeposits')?.replaceChildren(document.createTextNode(String(p)));},e=>setStatus('Deposits পড়তে সমস্যা: '+e.message,false));
+    onSnapshot(query(collection(db,'withdrawals'),orderBy('createdAt','desc'),limit(100)),snap=>{const items=snap.docs.map(d=>({id:d.id,...d.data()}));renderWithdrawals(items);const p=items.filter(x=>x.status==='Pending').length;$('#adminPendingWithdrawals')?.replaceChildren(document.createTextNode(String(p)));},e=>setStatus('Withdrawals পড়তে সমস্যা: '+e.message,false));
+    onSnapshot(collection(db,'users'),snap=>{const users=snap.docs.map(d=>({id:d.id,...d.data()}));const total=users.reduce((a,u)=>a+Number(u.balance||0),0);$('#adminUserCount')?.replaceChildren(document.createTextNode(String(users.length)));$('#adminBalanceTotal')?.replaceChildren(document.createTextNode(money(total)));$('#adminRecentHistory')?.replaceChildren(...users.slice(0,5).map(u=>{const d=document.createElement('div');d.className='history-row';d.innerHTML='<b>'+esc(u.email||u.uid||u.id)+'</b><span>'+money(u.balance||0)+'</span>';return d;}));},e=>setStatus('Users পড়তে সমস্যা: '+e.message,false));
+  }else if(currentUser){
+    onSnapshot(query(collection(db,'transactions'),where('uid','==',currentUser.uid),limit(100)),snap=>{
+      enhancedTransactions=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+      renderTransactions(enhancedTransactions);
+      renderEnhanced();
+    },e=>setStatus('Transaction history পড়তে সমস্যা: '+e.message,false));
+
+    onSnapshot(query(collection(db,'loginHistory'),where('uid','==',currentUser.uid),limit(100)),snap=>{
+      enhancedLogins=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.loginAt?.seconds||0)-(a.loginAt?.seconds||0));
+      renderEnhanced();
+    },e=>setStatus('Login history পড়তে সমস্যা: '+e.message,false));
+
+    onSnapshot(doc(db,'users',currentUser.uid),snap=>{
+      enhancedBalance=Number(snap.data()?.balance||0);
+      renderEnhanced();
+    },e=>setStatus('Balance পড়তে সমস্যা: '+e.message,false));
+  }
+}
+const DEPOSIT_NUMBER='01920771637',MIN_DEPOSIT=100,MIN_WITHDRAW=150;
+const VIP_PACKAGES=[
+ {id:'vip1',name:'VIP 1',price:100,days:10},
+ {id:'vip2',name:'VIP 2',price:200,days:20},
+ {id:'vip3',name:'VIP 3',price:300,days:30},
+ {id:'vip4',name:'VIP 4',price:500,days:45},
+ {id:'vip5',name:'VIP 5',price:1000,days:60}
+];
+async function bindWithdraw(){
+ const submit=$('#submitWithdraw'),msg=$('#withdrawMessage');if(!submit)return;
+ submit.onclick=async()=>{if(!currentUser){msg.innerHTML='<div class="notice">আগে Login করুন।</div>';return;}const amount=Number($('#withdrawAmount').value),method=$('#withdrawMethod').value,number=$('#withdrawNumber').value.trim();const snap=await getDoc(doc(db,'users',currentUser.uid));const balance=Number(snap.data()?.balance||0);if(!Number.isFinite(amount)||amount<MIN_WITHDRAW){msg.innerHTML='<div class="notice">সর্বনিম্ন উইথড্র ৳'+MIN_WITHDRAW+'।</div>';return;}if(amount>balance){msg.innerHTML='<div class="notice">আপনার বর্তমান ব্যালেন্স যথেষ্ট নয়।</div>';return;}if(!/^01\d{9}$/.test(number)){msg.innerHTML='<div class="notice">সঠিক ১১ সংখ্যার মোবাইল নম্বর দিন।</div>';return;}submit.disabled=true;try{await addDoc(collection(db,'withdrawals'),{uid:currentUser.uid,email:currentUser.email||'',method,number,withdrawNumber:number,recipientNumber:number,accountNumber:number,amount,status:'Pending',createdAt:serverTimestamp()});msg.innerHTML='<div class="notice">উইথড্র রিকোয়েস্ট জমা হয়েছে।</div>';$('#withdrawAmount').value='';$('#withdrawNumber').value='';}catch(e){msg.innerHTML='<div class="notice">রিকোয়েস্ট পাঠানো যায়নি: '+esc(e.message)+'</div>';}finally{submit.disabled=false;}};
+}
+async function buyVipPackage(index){
+ if(!currentUser){setStatus('আগে Login করুন',false);return;}
+ const pack=VIP_PACKAGES[index];if(!pack)return;
+ try{
+  const userRef=doc(db,'users',currentUser.uid),vipRef=doc(db,'vipPackages',currentUser.uid),snap=await getDoc(userRef);const balance=Number(snap.data()?.balance||0);
+  if(balance<pack.price)throw new Error('VIP কিনতে কমপক্ষে ৳'+pack.price+' ব্যালেন্স দরকার');
+  await runTransaction(db,async(tx)=>{
+   const latest=await tx.get(userRef);const b=Number(latest.data()?.balance||0);if(b<pack.price)throw new Error('বর্তমান ব্যালেন্স যথেষ্ট নয়');
+   tx.update(userRef,{balance:b-pack.price,updatedAt:serverTimestamp()});
+   tx.set(vipRef,{uid:currentUser.uid,packageId:pack.id,packageName:pack.name,price:pack.price,durationDays:pack.days,claimedDays:0,status:'active',startedAt:serverTimestamp(),updatedAt:serverTimestamp()},{merge:true});
+   tx.set(doc(db,'transactions',currentUser.uid+'_vip_purchase_'+Date.now()),{uid:currentUser.uid,type:'VIP Purchase',packageId:pack.id,packageName:pack.name,amount:-pack.price,durationDays:pack.days,status:'Approved',createdAt:serverTimestamp()});
+  });
+  setStatus(pack.name+' কেনা হয়েছে — '+pack.days+' দিনের VIP');renderEnhanced();await refreshVipCards();
+ }catch(e){setStatus(e.message||'VIP কেনা যায়নি',false);}
+}
+async function refreshVipCards(){
+ if(!currentUser)return;try{const snap=await getDoc(doc(db,'vipPackages',currentUser.uid));const v=snap.exists()?snap.data():null;document.querySelectorAll('[data-vip-index]').forEach(btn=>{const i=Number(btn.dataset.vipIndex),p=VIP_PACKAGES[i];btn.disabled=!!v&&v.status==='active';btn.textContent=!!v&&v.status==='active'?'চলছে':'কিনুন';});const st=$('#vipStatus');if(st)st.textContent=v&&v.status==='active'?(v.packageName+' • '+v.durationDays+' দিন • ৳ '+v.price+' • Active'):'একটি প্যাকেজ নির্বাচন করুন';}catch(e){}}
+async function bindVip(){document.querySelectorAll('[data-vip-index]').forEach(btn=>btn.onclick=()=>buyVipPackage(Number(btn.dataset.vipIndex)));await refreshVipCards();}
+function openAccountModal(type){
+ const modal=$('#accountModal'),body=$('#accountModalBody'),title=$('#accountModalTitle'),sub=$('#accountModalSub');if(!modal||!currentUser)return;
+ const u=window.__currentUserData||{};modal.classList.add('show');
+ if(type==='referral'){title.textContent='রেফারেল কোড ও লিংক';sub.textContent='আপনার Referral Code, User Code এবং Referral Link';const code=u.referralCode||('XMPR'+String(currentUser.uid).slice(-6).toUpperCase());body.innerHTML='<div class="account-grid"><label>রেফারেল কোড</label><input id="accountReferralCode" value="'+esc(code)+'" readonly><label>ইউজার কোড / User ID</label><input value="'+esc(currentUser.uid)+'" readonly><label>রেফারেল লিংক</label><div class="account-link-box" id="accountReferralLink">'+esc(location.origin+location.pathname+'?ref='+code)+'</div><div class="account-actions"><button class="account-copy" id="copyReferralOnly">রেফারেল কোড কপি</button><button class="account-copy" id="copyReferralLinkOnly">রেফারেল লিংক কপি</button></div></div>';$('#copyReferralOnly').onclick=()=>navigator.clipboard?.writeText(code).then(()=>setStatus('Referral Code কপি হয়েছে'));$('#copyReferralLinkOnly').onclick=()=>navigator.clipboard?.writeText(location.origin+location.pathname+'?ref='+code).then(()=>setStatus('Referral Link কপি হয়েছে'));}
+ else if(type==='username'){title.textContent='ইউজার নেম সেট করুন';sub.textContent='আপনার প্রোফাইলে Username দেখাবে';body.innerHTML='<div class="account-grid"><label>ইউজার নেম</label><input id="accountUsername" maxlength="30" value="'+esc(u.username||u.name||'')+'" placeholder="যেমন: Jahid Khan"><button class="account-save" id="saveUsername">সেট করুন</button><div class="notice deposit-note-mini">নামটি আপনার Firebase user profile-এ সেভ হবে।</div></div>';$('#saveUsername').onclick=async()=>{const name=$('#accountUsername').value.trim();if(name.length<2){setStatus('কমপক্ষে ২ অক্ষরের Username দিন',false);return;}try{await setDoc(doc(db,'users',currentUser.uid),{username:name,name,updatedAt:serverTimestamp()},{merge:true});window.__currentUserData={...u,username:name,name};setStatus('Username সেট হয়েছে');closeAccountModal();await openProfile();}catch(e){setStatus(e.message,false);}};}
+ else if(type==='usercode'){title.textContent='ইউজার কোড';sub.textContent='আপনার ইউনিক User ID';body.innerHTML='<div class="account-grid"><label>ইউজার কোড</label><input value="'+esc(currentUser.uid)+'" readonly><button class="account-copy" id="copyUserCode">কপি করুন</button></div>';$('#copyUserCode').onclick=()=>navigator.clipboard?.writeText(currentUser.uid).then(()=>setStatus('User ID কপি হয়েছে'));}
+ else {title.textContent='প্রোফাইল তথ্য';sub.textContent='আপনার অ্যাকাউন্টের তথ্য';body.innerHTML='<div class="account-grid"><label>Username</label><input value="'+esc(u.username||u.name||'')+'" readonly><label>User ID</label><input value="'+esc(currentUser.uid)+'" readonly><label>Referral Code</label><input value="'+esc(u.referralCode||'')+'" readonly><label>Level</label><input value="'+esc(u.level||'Level 1')+'" readonly></div>';}
+}
+function closeAccountModal(){$('#accountModal')?.classList.remove('show');}window.openAccountModal=openAccountModal;window.closeAccountModal=closeAccountModal;
+
+onAuthStateChanged(auth,async user=>{
+  if(!user){currentUser=null;currentRole='user';$('#authScreen').style.display='grid';$('#userEmail').textContent='Not logged in';$('#avatar').textContent='U';$('#welcomeTitle').textContent='লগইন করুন 👋';applyRoleUI();return;}
+  currentUser=user;
+  $('#authScreen').style.display='none';
+  const email=user.email||'User';
+  $('#userEmail').textContent=email;
+  $('#avatar').textContent=email.charAt(0).toUpperCase();
+  $('#welcomeTitle').textContent='স্বাগতম! 👋';
+  currentRole='user';
+  enhancedBalance=0;
+  try{
+    const data=await ensureUserDoc(user);
+    enhancedBalance=Number(data?.balance||0);
+    currentRole=data?.role==='admin'?'admin':'user';
+  }catch(e){console.warn('Profile read skipped:',e);}
+  processReferral(user).catch(e=>console.warn('Referral processing skipped:',e));
+  applyRoleUI();bindSettings();bindDeposit();bindWithdraw();bindVip();bindAdminTask();
+  try{startRealtime();}catch(e){console.warn('Realtime unavailable:',e);}
+  renderEnhanced();
+  authMessage('');
+  setStatus('Firebase account connected');
+});
+
+try { window.analytics = getAnalytics(app); } catch(e) {}
+
+</script>
+
+<div class="account-modal" id="accountModal" onclick="if(event.target===this)closeAccountModal()"><div class="account-sheet"><div class="account-head"><div><h3 id="accountModalTitle">অ্যাকাউন্ট তথ্য</h3><small id="accountModalSub">আপনার তথ্য দেখুন ও সেট করুন</small></div><button class="account-close" onclick="closeAccountModal()">×</button></div><div id="accountModalBody"></div></div></div>
+<div class="profile-modal" id="profileModal"><div class="profile-sheet"><div class="profile-head"><button class="profile-back" onclick="closeProfile()">‹</button><div class="profile-big-avatar" id="profileBigAvatar">U</div><div><h2>আমার প্রোফাইল</h2><p id="profileEmail">User</p></div><span class="profile-live" style="margin-left:auto;background:#ffffff22;color:#fff"><i style="background:#fff"></i> Live</span><button class="profile-close" onclick="closeProfile()">×</button></div><div class="xmpr-profile-blue">
+  <div class="profile-userline">
+    <div class="profile-user-avatar" id="profileBlueAvatar">U</div>
+    <div>
+      <div class="profile-user-name" id="profileBlueName">Jahid Khan</div>
+      <div class="profile-user-meta">User ID: <span id="profileBlueUid">—</span></div>
+      <div class="profile-user-meta"><span id="profileBlueLevel">Level 1</span></div>
+    </div>
+    <span class="profile-active">● Live / Active</span>
+  </div>
+  <div class="xmpr-profile-stats">
+    <div class="xmpr-profile-stat"><small>বর্তমান ব্যালেন্স</small><b id="profileBalance">৳ 0</b></div>
+    <div class="xmpr-profile-stat"><small>মোট ডিপোজিট</small><b id="profileTotalDeposit">৳ 0</b></div>
+    <div class="xmpr-profile-stat"><small>আজকের ইনকাম</small><b id="profileTodayDeposit">৳ 0</b></div>
+  </div>
+</div>
+
+<div class="profile-referral-card card">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px">
+    <div style="font-size:12px;font-weight:800">👥 আমার Referral Code</div>
+    <span style="font-size:9px;color:#087f4e;background:#e9f9f0;padding:4px 7px;border-radius:15px">৳25 / ৳15</span>
+  </div>
+  <div style="display:flex;gap:6px;align-items:center">
+    <input id="myReferralLink" readonly style="flex:1;min-width:0;padding:9px;border:1px solid #e8edf5;border-radius:8px;font-size:9px;background:#f7f9fc">
+    <button class="copy-btn" id="copyReferralLink" style="padding:8px 10px;font-size:10px">কপি</button>
+  </div>
+</div>
+
+<div class="profile-identity-grid">
+  <div class="profile-id-card"><small>USER ID / USER CODE</small><b id="profileUid">—</b></div>
+  <div class="profile-id-card"><small>LEVEL</small><b id="profileLevel">Level 1</b></div>
+  <div class="profile-id-card"><small>VIP STATUS</small><b id="profileVip">Inactive</b></div>
+  <div class="profile-id-card"><small>QUIODO</small><b id="profileQuido">—</b></div>
+  <div class="profile-id-card full"><small>ACCOUNT STATUS</small><b><span class="profile-live"><i></i> Live / Active</span></b></div>
+</div>
+
+<div class="profile-menu">
+  <button class="profile-row primary" onclick="closeProfile();showPage('deposit',document.querySelector('.nav button:nth-child(4)'))">
+    <span class="row-icon">💳</span><span class="row-text"><b>ডিপোজিট / উইথড্র</b><small>ডিপোজিট ও উইথড্র সিস্টেম</small></span><span class="arrow">›</span>
+  </button>
+  <button class="profile-row" onclick="closeProfile();showPage('shop',document.querySelector('.nav button:nth-child(3)'))">
+    <span class="row-icon">👑</span><span class="row-text"><b>VIP কিনুন</b><small>৫টি VIP প্যাকেজ থেকে বেছে নিন</small></span><span class="arrow">›</span>
+  </button>
+  <button class="profile-row" onclick="openAccountModal('referral')">
+    <span class="row-icon">👥</span><span class="row-text"><b>রেফারেল কোড ও লিংক</b><small>Referral Code, Link ও User Code</small></span><span class="arrow">›</span>
+  </button>
+  <button class="profile-row" onclick="openAccountModal('username')">
+    <span class="row-icon">👤</span><span class="row-text"><b>ইউজার নেম</b><small>আপনার প্রোফাইলের নাম সেট করুন</small></span><span class="arrow">›</span>
+  </button>
+  <button class="profile-row" onclick="openAccountModal('usercode')">
+    <span class="row-icon">🆔</span><span class="row-text"><b>ইউজার কোড</b><small id="profileUidRow">আপনার ইউনিক User ID</small></span><span class="arrow">›</span>
+  </button>
+  <button class="profile-row" onclick="setStatus('Quido: '+(document.getElementById('profileQuido')?.textContent||'—'))">
+    <span class="row-icon">🔑</span><span class="row-text"><b>কুইডো</b><small>আপনার অ্যাকাউন্টের Quido তথ্য</small></span><span class="arrow">›</span>
+  </button>
+  <button class="profile-row" onclick="closeProfile();showPage('tasks',document.querySelector('.nav button:nth-child(2)'))">
+    <span class="row-icon">▣</span><span class="row-text"><b>আমার টাস্ক</b><small>৫টি টাস্ক ও রিওয়ার্ড</small></span><span class="arrow">›</span>
+  </button>
+  <button class="profile-row" onclick="closeProfile();showPage('dashboard',document.querySelector('.nav button:nth-child(1)'))">
+    <span class="row-icon">💰</span><span class="row-text"><b>সম্পূর্ণ হিস্টরি</b><small>ডিপোজিট, উইথড্র, টাস্ক ও লগইন</small></span><span class="arrow">›</span>
+  </button>
+  <button class="profile-row" onclick="openSupport()">
+    <span class="row-icon">🎧</span><span class="row-text"><b>সাপোর্ট চ্যাট</b><small>যেকোনো সময় Telegram-এ মেসেজ করুন</small></span><span class="arrow">›</span>
+  </button>
+  <button id="profileLogout" class="profile-row logout">
+    <span class="row-icon">↪</span><span class="row-text"><b>লগআউট</b><small>আপনার অ্যাকাউন্ট থেকে বের হন</small></span><span class="arrow">›</span>
+  </button>
+</div>
+
+<div class="profile-history-wrap">
+  <h3>📚 লাইভ হিস্টরি</h3>
+  <div class="profile-tabs">
+    <button class="profile-tab active home-history-tab" data-home-pane="profileAllHistory">সব</button>
+    <button class="profile-tab home-history-tab" data-home-pane="profileDepositPane">ডিপোজিট</button>
+    <button class="profile-tab home-history-tab" data-home-pane="profileTaskPane">টাস্ক</button>
+  </div>
+  <div id="profileAllHistory" class="profile-pane active"><div id="profileAllHistoryList" class="history-list"></div></div>
+  <div id="profileDepositPane" class="profile-pane"><div id="profileDepositHistory" class="history-list"></div></div>
+  <div id="profileTaskPane" class="profile-pane"><div id="profileTaskHistory" class="history-list"></div></div>
+</div>
+
+<div class="task-detail-modal" id="taskDetailModal" onclick="if(event.target===this)closeTaskDetail()"><div class="task-detail-sheet"><div class="task-detail-head"><div class="task-detail-icon" id="taskDetailIcon">▣</div><div><h3 id="taskDetailTitle">Task</h3><small id="taskDetailReward">৳ 1.50 Reward</small></div><button class="support-close" style="margin-left:auto" onclick="closeTaskDetail()">×</button></div><div class="task-detail-desc" id="taskDetailDesc">Task description</div><div class="task-detail-meta"><div class="task-meta"><small>রিওয়ার্ড</small><b id="taskDetailAmount">৳ 1.50</b></div><div class="task-meta"><small>স্ট্যাটাস</small><b id="taskDetailStatus">Ready</b></div></div><div class="task-detail-actions"><button class="task-cancel" onclick="closeTaskDetail()">বন্ধ করুন</button><button class="task-go" id="taskDetailGo">Go →</button></div><div class="task-link-note">Go চাপলে নির্ধারিত লিংক নতুন ট্যাবে খুলবে। কাজ শেষে Claim Reward চাপুন।</div><button class="task-go" id="taskDetailClaim" style="width:100%;margin-top:8px">✓ কাজ সম্পন্ন / Claim Reward</button></div></div><div class="support-modal" id="supportModal" onclick="if(event.target===this)closeSupport()"><div class="support-sheet">
+  <div class="support-head"><div class="support-icon">💬</div><div><h3>সাপোর্ট চ্যাট</h3><small>যেকোনো সময় যোগাযোগ করুন</small></div><button class="support-close" onclick="closeSupport()">×</button></div>
+  <div class="support-card"><div class="support-user">@Jahidul001</div><div class="support-desc">সাহায্য, সমস্যা বা প্রশ্ন থাকলে সরাসরি Telegram-এ মেসেজ পাঠাতে পারবেন।</div>
+    <div class="support-actions"><a class="support-telegram" href="https://t.me/Jahidul001" target="_blank" rel="noopener">✈️ Telegram-এ চ্যাট</a><button class="support-copy" onclick="copySupportUsername()">📋 Username কপি</button></div>
+  </div>
+</div></div>
+<button class="support-fab" id="supportFab" onclick="openSupport()" aria-label="Support Chat">💬</button>
+<nav class="mobile-bottom-nav" id="mobileBottomNav"><button data-mobile="dashboard" class="active" onclick="mobileNav('dashboard',this)"><b class="home-dot">⌂</b><span>Home</span></button><button data-mobile="tasks" onclick="mobileNav('tasks',this)"><b>✓</b><span>Task</span></button><button data-mobile="deposit" onclick="mobileNav('deposit',this)"><b>▣</b><span>Wallet</span></button><button data-mobile="shop" onclick="mobileNav('shop',this)"><b>🛒</b><span>Shop</span></button><button onclick="openProfile()"><b>♙</b><span>Profile</span></button></nav>
+
+<script>
+let enhancedDeposits=[],enhancedTransactions=[],enhancedLogins=[],enhancedBalance=0;
+function copyEnhancedNagad(){navigator.clipboard?.writeText('01920771637').then(()=>setStatus('নগদ নম্বর কপি হয়েছে')).catch(()=>setStatus('নগদ নম্বর: 01920771637'));}
+function eDate(v){try{let d=v&&v.toDate?v.toDate():new Date(v);return d.toLocaleString('bn-BD',{dateStyle:'medium',timeStyle:'short'});}catch(e){return '—';}}
+function eDay(v){try{let d=v&&v.toDate?v.toDate():new Date(v);return d.toLocaleDateString('en-CA');}catch(e){return '';}}
+function renderEnhanced(){
+  let ok=enhancedDeposits.filter(x=>String(x.status||'').toLowerCase()==='approved'),
+      total=ok.reduce((s,x)=>s+Number(x.amount||0),0),
+      today=ok.filter(x=>eDay(x.createdAt)===eDay(new Date())).reduce((s,x)=>s+Number(x.amount||0),0);
+  let vals={dashBalance:money(enhancedBalance),profileBalance:money(enhancedBalance),profileTotalDeposit:money(total),profileTodayDeposit:money(today),dashDepositTotal:money(total)};
+  Object.entries(vals).forEach(([id,v])=>{let x=document.getElementById(id);if(x)x.textContent=v;});
+
+  let makeDeposit=x=>'<div class="history-row"><div><b>'+money(x.amount)+'</b><small>Nagad • '+esc(x.transactionId||'')+'<br>'+eDate(x.createdAt)+'</small></div><span class="deposit-status '+String(x.status||'pending').toLowerCase()+'">'+esc(x.status||'Pending')+'</span></div>';
+  let makeTx=x=>'<div class="history-row"><div><b>'+esc(x.type||'Transaction')+'</b><small>'+eDate(x.createdAt)+(x.taskTitle?' • '+esc(x.taskTitle):'')+'</small></div><span><strong>'+money(x.amount||0)+'</strong><br><small>'+esc(x.status||'Pending')+'</small></span></div>';
+  let makeLogin=x=>'<div class="history-row"><div><b>🔐 '+esc(x.event||'Login')+'</b><small>'+eDate(x.loginAt)+'</small></div><span class="deposit-status approved">Success</span></div>';
+
+  let dh=document.getElementById('dashDepositHistory');
+  if(dh)dh.innerHTML=enhancedDeposits.slice(0,5).map(makeDeposit).join('')||'<div class="notice">এখনো কোনো ডিপোজিট নেই।</div>';
+  let taskItems=enhancedTransactions.filter(x=>String(x.type||'').toLowerCase().includes('task'));
+  let allHistory=document.getElementById('profileAllHistoryList');if(allHistory){const all=[...enhancedTransactions.map(x=>({kind:'tx',...x})),...enhancedDeposits.map(x=>({kind:'dep',...x})),...enhancedLogins.map(x=>({kind:'login',...x}))].slice(0,30);allHistory.innerHTML=all.map(x=>x.kind==='dep'?makeDeposit(x):x.kind==='login'?makeLogin(x):makeTx(x)).join('')||'<div class="notice">এখনো কোনো হিস্টরি নেই।</div>';}let taskHistory=document.getElementById('profileTaskHistory');if(taskHistory)taskHistory.innerHTML=taskItems.map(makeTx).join('')||'<div class="notice">এখনো কোনো Task history নেই।</div>';
+  let ph=document.getElementById('profileDepositHistory');
+  if(ph)ph.innerHTML=enhancedDeposits.map(makeDeposit).join('')||'<div class="notice">এখনো কোনো ডিপোজিট নেই।</div>';
+
+  let homeTask=document.getElementById('homeTaskHistoryList');
+  if(homeTask)homeTask.innerHTML=taskItems.map(makeTx).join('')||'<div class="notice">এখনো কোনো Task history নেই।</div>';
+  let homeLogin=document.getElementById('homeLoginHistoryList');
+  if(homeLogin)homeLogin.innerHTML=enhancedLogins.map(makeLogin).join('')||'<div class="notice">এখনো কোনো Login history নেই।</div>';
+  let homeTx=document.getElementById('homeTransactionHistoryList');
+  if(homeTx)homeTx.innerHTML=enhancedTransactions.map(makeTx).join('')||'<div class="notice">এখনো কোনো Transaction history নেই।</div>';
+
+  let lh=document.getElementById('loginHistoryList');
+  if(lh)lh.innerHTML=enhancedLogins.map(makeLogin).join('')||'<div class="notice">এখনো লগইন হিস্টরি নেই।</div>';
+
+  let groups={};
+  enhancedTransactions.forEach(x=>(groups[eDay(x.createdAt)]??=[]).push(x));
+  let rows=Object.entries(groups).sort((a,b)=>b[0].localeCompare(a[0])).map(([d,a])=>'<div class="history-row"><div><b>📅 '+d+'</b><small>'+a.length+'টি লেনদেন</small></div><strong>'+money(a.reduce((s,x)=>s+Number(x.amount||0),0))+'</strong></div>').join('');
+  let dl=document.getElementById('profileDailyHistory');
+  if(dl)dl.innerHTML=rows||'<div class="notice">ডেইলি হিস্টরি নেই।</div>';
+}
+let selectedTaskForModal=null;function openTaskDetail(task){if(!task)return;selectedTaskForModal=task;$('#taskDetailIcon').textContent=task.icon||'▣';$('#taskDetailTitle').textContent=task.title||'Task';$('#taskDetailDesc').textContent=task.description||'এই টাস্কটি সম্পন্ন করুন।';$('#taskDetailAmount').textContent=money(1.5);$('#taskDetailReward').textContent=money(1.5)+' Reward';$('#taskDetailStatus').textContent='Ready';$('#taskDetailModal').classList.add('show');$('#taskDetailGo').onclick=()=>{if(task.url)window.open(task.url,'_blank','noopener');else setStatus('এই টাস্কের কোনো লিংক সেট করা নেই',false);};$('#taskDetailClaim').onclick=async()=>{if(!currentUser){setStatus('আগে Login করুন',false);return;}const fake={dataset:{taskId:task.id,title:task.title}};await claimDailyTask(fake);closeTaskDetail();if(window.__renderTasksReload)window.__renderTasksReload();};}function closeTaskDetail(){$('#taskDetailModal')?.classList.remove('show');selectedTaskForModal=null;}window.openTaskDetail=openTaskDetail;window.closeTaskDetail=closeTaskDetail;
+async function openProfile(){document.getElementById('profileModal')?.classList.add('show');const em=currentUser?.email||'User';document.getElementById('profileEmail').textContent=em;document.getElementById('profileBigAvatar').textContent=em[0]?.toUpperCase()||'U';if(currentUser){try{const s=await getDoc(doc(db,'users',currentUser.uid)),u=s.data()||{},code=u.referralCode||('XMPR'+String(currentUser.uid).slice(-6).toUpperCase());window.__currentUserData=u;$('#profileUid').textContent=currentUser.uid;$('#profileUidRow').textContent='ID: '+currentUser.uid;$('#profileEmail').textContent=(u.username||u.name||currentUser.email||'User');$('#profileBlueName').textContent=(u.username||u.name||currentUser.email||'User');$('#profileBlueAvatar').textContent=(u.username||u.name||currentUser.email||'U').charAt(0).toUpperCase();$('#profileBlueUid').textContent=currentUser.uid;$('#profileLevel').textContent=String(u.level||u.vipLevel||'Level 1');$('#profileBlueLevel').textContent=String(u.level||u.vipLevel||'Level 1');$('#profileVip').textContent=String(u.vipStatus||u.vip||'Inactive');$('#profileQuido').textContent=String(u.quido||u.kuido||u.quidoCode||'—');$('#myReferralLink').value=location.origin+location.pathname+'?ref='+encodeURIComponent(code);const cp=$('#copyReferralLink');if(cp)cp.onclick=async()=>{try{await navigator.clipboard.writeText($('#myReferralLink').value);setStatus('Referral link কপি হয়েছে');}catch(e){setStatus($('#myReferralLink').value);}};try{const vs=await getDoc(doc(db,'vipPackages',currentUser.uid));if(vs.exists())$('#profileVip').textContent=vs.data()?.status==='completed'?'Completed':'Active';}catch(e){}}catch(e){setStatus('Profile তথ্য লোড করা যায়নি',false);}}renderEnhanced();}
+function closeProfile(){document.getElementById('profileModal')?.classList.remove('show');}window.openProfile=openProfile;window.closeProfile=closeProfile;
+document.getElementById('profileOpen')?.addEventListener('click',openProfile);document.getElementById('profileLogout')?.addEventListener('click',async()=>{closeProfile();await signOut(auth);});window.mobileNav=(id,btn)=>{let n=document.querySelector(`.nav button[onclick*="showPage('${id}'"]`);if(n)showPage(id,n);document.querySelectorAll('#mobileBottomNav button').forEach(x=>x.classList.remove('active'));btn?.classList.add('active');};
+
+document.querySelectorAll('.home-history-tab').forEach(tab=>{tab.addEventListener('click',()=>{const pane=tab.dataset.homePane;const scope=tab.closest('.profile-history-wrap')||document;scope.querySelectorAll('.home-history-tab').forEach(x=>x.classList.remove('active'));scope.querySelectorAll('.profile-pane').forEach(x=>x.classList.remove('active'));tab.classList.add('active');document.getElementById(pane)?.classList.add('active');});});
+document.querySelectorAll('.deposit-tab').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.deposit-tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.deposit-panel').forEach(x=>x.classList.remove('active'));btn.classList.add('active');document.getElementById(btn.dataset.depositTab)?.classList.add('active');}));
+function openSupport(){document.getElementById('supportModal')?.classList.add('show');}
+function closeSupport(){document.getElementById('supportModal')?.classList.remove('show');}
+async function copySupportUsername(){try{await navigator.clipboard.writeText('@Jahidul001');setStatus('Support username কপি হয়েছে');}catch(e){setStatus('Support username: @Jahidul001');}}
+window.openSupport=openSupport;window.closeSupport=closeSupport;window.copySupportUsername=copySupportUsername;
+</script>
+</body>
+</html>
