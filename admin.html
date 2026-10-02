@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XMPR100 — Admin Control</title>
+<style>
+:root{--bg:#07102b;--panel:#0d1738;--panel2:#111d46;--text:#f5f7ff;--muted:#9da8c8;--line:#25335f;--blue:#315cff;--purple:#8b3dff;--green:#20d67b;--red:#ff5570;--orange:#ffad32}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0,#18265b 0,#07102b 42%,#050b20 100%);color:var(--text);font-family:Arial,"Noto Sans Bengali",sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:11px;padding:10px 14px;color:#fff;background:linear-gradient(135deg,var(--blue),var(--purple));font-weight:700}
+button.secondary{background:#17244c;border:1px solid var(--line)}button.danger{background:#5b1930;color:#ffb5c2;border:1px solid #87304a}button.success{background:#0d5c3c;color:#9ff2c7;border:1px solid #178b5a}button.warn{background:#5b3b10;color:#ffd994;border:1px solid #94631b}
+.hidden{display:none!important}.app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}.side{border-right:1px solid #1a2852;background:#050b20cc;padding:22px 16px;position:sticky;top:0;height:100vh}.brand{font-size:21px;font-weight:900;display:flex;align-items:center;gap:10px}.logo{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#20a7ff,#8b3dff);display:grid;place-items:center;font-weight:900}.brand small{display:block;color:#7f8bb0;font-size:10px;margin-top:2px}.nav{margin-top:28px;display:grid;gap:8px}.nav button{width:100%;text-align:left;background:transparent;color:#b8c2e0;border:1px solid transparent}.nav button:hover,.nav button.active{background:linear-gradient(90deg,#18367d,#5424a4);color:#fff;border-color:#3c56a2}.nav .logout{margin-top:20px;background:#321526;color:#ff8ea3}.main{min-width:0}.top{height:76px;border-bottom:1px solid #1c2a54;display:flex;align-items:center;justify-content:space-between;padding:0 26px;background:#07112edb;backdrop-filter:blur(12px);position:sticky;top:0;z-index:20}.top h2{margin:0;font-size:20px}.top small{color:var(--muted)}.content{padding:24px;max-width:1500px;margin:auto}.welcome{margin-bottom:18px}.welcome h1{margin:0 0 5px;font-size:28px}.welcome p{margin:0;color:var(--muted)}.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}.stat{background:linear-gradient(145deg,#0f1a40,#0a1430);border:1px solid var(--line);border-radius:17px;padding:16px}.stat small{color:#aeb8d4}.stat b{display:block;font-size:25px;margin-top:7px}.grid{display:grid;gap:14px}.grid2{grid-template-columns:1.4fr 1fr}.card{background:linear-gradient(145deg,#0e1839,#09132f);border:1px solid var(--line);border-radius:18px;padding:18px}.card h3{margin:0 0 12px}.sub{color:var(--muted);font-size:13px}.tabs{display:flex;gap:8px;overflow:auto;margin:14px 0}.tabs button{white-space:nowrap;background:#101c40;border:1px solid var(--line);color:#aeb8d4}.tabs button.active{background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff}.panel{background:linear-gradient(145deg,#0d1738,#08122c);border:1px solid var(--line);border-radius:18px;padding:16px}.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:13px}.toolbar input{max-width:360px}.field{display:grid;gap:6px}.field label{font-size:12px;color:#b7c1dc;font-weight:700}input,select,textarea{width:100%;border:1px solid var(--line);background:#08132f;color:#fff;border-radius:10px;padding:11px;outline:none}textarea{min-height:90px;resize:vertical}input:focus,select:focus,textarea:focus{border-color:#4f72ff}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:13px}table{width:100%;border-collapse:collapse;min-width:900px}th,td{padding:11px;border-bottom:1px solid #1c2a4f;text-align:left;vertical-align:top;font-size:12px}th{background:#111e45;color:#cbd4ec;position:sticky;top:0}td{color:#e8ecf8}.badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:800;background:#26345f;color:#dbe4ff}.green{background:#0d5b3b;color:#9ff2c7}.red{background:#5d1d31;color:#ffb6c5}.yellow{background:#5a3b12;color:#ffd991}.actions{display:flex;gap:6px;flex-wrap:wrap}.actions button{padding:7px 9px;font-size:11px}.notice{padding:11px 13px;border-radius:12px;background:#10224c;border:1px solid #27427e;color:#b9d0ff;margin-bottom:12px;font-size:12px}.notice.error{background:#3b1526;border-color:#6c2740;color:#ffb6c5}.empty{text-align:center;padding:28px;color:var(--muted)}.toast{position:fixed;right:18px;bottom:18px;background:#101d43;border:1px solid #38528e;color:#fff;padding:12px 15px;border-radius:12px;z-index:100;box-shadow:0 10px 30px #0006}.modal{position:fixed;inset:0;background:#0009;display:grid;place-items:center;padding:18px;z-index:90}.modal-card{width:min(720px,100%);max-height:92vh;overflow:auto;background:#0b1635;border:1px solid #334578;border-radius:18px;padding:18px}.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.x{background:#16234a;border:1px solid var(--line);padding:7px 10px}.proof-img{max-width:100%;max-height:420px;border-radius:12px;border:1px solid var(--line);display:block;margin:10px auto}.login{min-height:100vh;display:grid;place-items:center;padding:20px}.login-card{width:min(430px,100%);background:linear-gradient(145deg,#101d45,#08122d);border:1px solid #2a3a68;border-radius:22px;padding:26px;box-shadow:0 25px 70px #0008}.login-card h1{margin:0}.login-card p{color:var(--muted)}.login-card .logo{margin-bottom:15px}.section{display:none}.section.active{display:block}.check{display:flex;gap:9px;align-items:center}.check input{width:auto}.task-default{display:grid;grid-template-columns:48px 1fr auto;gap:12px;align-items:center}.task-icon{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,#1b62e9,#7d35ef);display:grid;place-items:center;font-weight:900}.task-default b{display:block}.task-default small{color:var(--muted)}@media(max-width:950px){.app{grid-template-columns:1fr}.side{position:fixed;left:-270px;z-index:80;width:250px;transition:.2s}.side.open{left:0}.mobile-menu{display:block!important}.stats{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.content{padding:14px}.top{padding:0 14px}.two{grid-template-columns:1fr}}.mobile-menu{display:none;background:#13224b;border:1px solid var(--line)}
+@media(max-width:560px){.stats{grid-template-columns:1fr 1fr}.stat b{font-size:20px}.welcome h1{font-size:22px}.two{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div id="loginView" class="login">
+  <div class="login-card">
+    <div class="logo">MJ</div>
+    <h1>XMPR100 Admin</h1>
+    <p>শুধু Firebase-এর <b>admin role</b> থাকা account দিয়ে প্রবেশ করা যাবে।</p>
+    <div id="loginMsg" class="notice">Admin email ও password দিন।</div>
+    <div class="field"><label>Email</label><input id="email" type="email" autocomplete="username"></div>
+    <div class="field" style="margin-top:10px"><label>Password</label><input id="password" type="password" autocomplete="current-password"></div>
+    <button id="loginBtn" style="width:100%;margin-top:14px">Admin Login</button>
+  </div>
+</div>
+
+<div id="appView" class="app hidden">
+  <aside id="side" class="side">
+    <div class="brand"><div class="logo">MJ</div><div>MicroJob<small>XMPR100 ADMIN</small></div></div>
+    <div class="nav">
+      <button class="active" data-page="dashboard">▦ Dashboard</button>
+      <button data-page="users">♙ Users</button>
+      <button data-page="tasks">✓ Task Control</button>
+      <button data-page="proofs">▤ Screenshot Proofs</button><button data-page="claims">✓ Task Claims</button>
+      <button data-page="adprogress">◉ Verified Ads</button>
+      <button data-page="withdrawals">৳ Withdrawals</button>
+      <button data-page="transactions">⇄ Transactions</button>
+      <button data-page="audit">◷ Audit History</button>
+      <button class="logout" id="logoutBtn">⇥ Logout</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="top">
+      <div style="display:flex;align-items:center;gap:10px"><button class="mobile-menu" id="menuBtn">☰</button><div><h2>Admin Control Center</h2><small id="adminEmail">—</small></div></div>
+      <div class="badge green">Firebase Connected</div>
+    </header>
+
+    <div class="content">
+      <section id="dashboard" class="section active">
+        <div class="welcome"><h1>Welcome, Admin 👋</h1><p>Users, tasks, screenshot proof এবং withdrawal এক জায়গা থেকে নিয়ন্ত্রণ করুন।</p></div>
+        <div class="stats">
+          <div class="stat"><small>Total Users</small><b id="statUsers">0</b></div>
+          <div class="stat"><small>Active Tasks</small><b id="statTasks">0</b></div>
+          <div class="stat"><small>Pending Proofs</small><b id="statProofs">0</b></div>
+          <div class="stat"><small>Pending Withdrawals</small><b id="statWithdrawals">0</b></div>
+          <div class="stat"><small>Total User Balance</small><b id="statBalance">৳0.00</b></div>
+          <div class="stat"><small>Verified Ad Completions</small><b id="statAdCompletions">0</b></div>
+        </div>
+        <div class="grid grid2">
+          <div class="card"><h3>Task Rates</h3><div id="defaultTaskList" class="grid"></div></div>
+          <div class="card"><h3>Quick Actions</h3><div class="grid"><button data-page="tasks">⚙️ Manage Tasks</button><button data-page="proofs">🖼️ Review Screenshots</button><button data-page="withdrawals">💸 Review Withdrawals</button></div></div>
+        </div>
+      </section>
+
+      <section id="users" class="section">
+        <div class="welcome"><h1>User Management</h1><p>Balance, role এবং account status নিয়ন্ত্রণ করুন।</p></div>
+        <div class="panel"><div class="toolbar"><input id="userSearch" placeholder="নাম / email / UID দিয়ে খুঁজুন"><button class="secondary" id="refreshUsers">Refresh</button></div><div class="table-wrap"><table><thead><tr><th>User</th><th>Balance</th><th>Role</th><th>Status</th><th>Created</th><th>Action</th></tr></thead><tbody id="usersBody"></tbody></table></div></div>
+      </section>
+
+      <section id="tasks" class="section">
+        <div class="welcome"><h1>Task Control</h1><p>Facebook ৳2, YouTube ৳3, TikTok ৳2। Screenshot proof required tasks এবং ৩০ মিনিট cooldown tasks এখান থেকে নিয়ন্ত্রণ করুন।</p></div>
+        <div class="panel">
+          <h3>Add / Update Custom Task</h3>
+          <div class="two">
+            <div class="field"><label>Task Type</label><select id="taskType"><option value="facebook">Facebook Follow — ৳2</option><option value="youtube">YouTube Subscribe — ৳3</option><option value="tiktok">TikTok Follow / Like / Share — ৳2</option><option value="monetization_video">Monetization Video — ৳0.20</option><option value="ad_watch">Ad দেখে আয় — ৳0.20</option></select></div>
+            <div class="field"><label>Reward (৳)</label><input id="taskReward" type="number" step="0.01"></div>
+            <div class="field"><label>Title</label><input id="taskTitle"></div>
+            <div class="field"><label>Task Link / Video Link</label><input id="taskUrl" placeholder="https://..."></div>
+          </div>
+          <div class="field" style="margin-top:10px"><label>Description</label><textarea id="taskDesc"></textarea></div>
+          <div class="two" style="margin-top:10px">
+            <div class="field"><label>Cooldown Minutes</label><input id="taskCooldown" type="number" min="0" value="0"></div>
+            <div class="field"><label>Screenshot Proof</label><select id="taskProof"><option value="yes">Required</option><option value="no">Not Required</option></select></div>
+            <div class="field"><label>Task Status</label><select id="taskActive"><option value="yes">Active</option><option value="no">Inactive</option></select></div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:12px"><button id="saveTask">Save Task</button><button class="secondary" id="clearTask">Clear</button></div>
+        </div>
+        <div class="panel" style="margin-top:14px"><h3>Current Tasks</h3><div class="table-wrap"><table><thead><tr><th>Task</th><th>Reward</th><th>Proof</th><th>Cooldown</th><th>Status</th><th>Action</th></tr></thead><tbody id="tasksBody"></tbody></table></div></div>
+      </section>
+
+      <section id="proofs" class="section">
+        <div class="welcome"><h1>Screenshot Proof Control</h1><p>User screenshot পাঠানোর পর এখানে সাথে সাথে আসবে। Approve করলে task reward user balance-এ যোগ হবে।</p></div>
+        <div class="panel"><div class="toolbar"><select id="proofFilter"><option value="all">All</option><option value="Pending">Pending</option><option value="Approved">Approved</option><option value="Rejected">Rejected</option></select><button class="secondary" id="refreshProofs">Refresh</button></div><div class="table-wrap"><table><thead><tr><th>User</th><th>Task</th><th>Reward</th><th>Screenshot</th><th>Submitted</th><th>Status</th><th>Action</th></tr></thead><tbody id="proofsBody"></tbody></table></div></div>
+      </section>
+
+      <section id="claims" class="section">
+        <div class="welcome"><h1>Task Claim Control</h1><p>User কাজ শেষ করে Claim করলে এখানে Processing হিসেবে আসবে। Approve করলে transaction-এর মাধ্যমে reward একবারই balance-এ যোগ হবে।</p></div>
+        <div class="panel"><div class="toolbar"><select id="claimFilter"><option value="all">All</option><option value="Pending">Pending</option><option value="Approved">Approved</option><option value="Rejected">Rejected</option></select><button class="secondary" id="refreshClaims">Refresh</button></div><div class="table-wrap"><table><thead><tr><th>User</th><th>Task</th><th>Reward</th><th>Proof</th><th>Submitted</th><th>Status</th><th>Action</th></tr></thead><tbody id="claimsBody"></tbody></table></div></div>
+      </section>
+
+      <section id="adprogress" class="section">
+        <div class="welcome"><h1>Verified Ad Progress</h1><p>Provider/backend থেকে আসা verified ad events ও completion এখানে দেখা যাবে। Browser click বা timer-কে verified ধরা হবে না।</p></div>
+        <div class="panel"><div class="toolbar"><select id="adProgressFilter"><option value="all">All</option><option value="In Progress">In Progress</option><option value="Completed">Completed</option><option value="Rejected">Rejected</option></select><button class="secondary" id="refreshAdProgress">Refresh</button></div><div class="table-wrap"><table><thead><tr><th>User</th><th>Task</th><th>Progress</th><th>Verified Impressions</th><th>Verified Clicks</th><th>Status</th><th>Updated</th></tr></thead><tbody id="adProgressBody"></tbody></table></div></div>
+      </section>
+
+      <section id="withdrawals" class="section">
+        <div class="welcome"><h1>Withdrawal Control</h1><p>Minimum withdrawal ৳100। Admin approve/reject করবেন।</p></div>
+        <div class="panel"><div class="toolbar"><select id="withdrawFilter"><option value="all">All</option><option value="Pending">Pending</option><option value="Approved">Approved</option><option value="Rejected">Rejected</option></select><button class="secondary" id="refreshWithdrawals">Refresh</button></div><div class="table-wrap"><table><thead><tr><th>User</th><th>Amount</th><th>Method</th><th>Number</th><th>Submitted</th><th>Status</th><th>Action</th></tr></thead><tbody id="withdrawalsBody"></tbody></table></div></div>
+      </section>
+
+      <section id="transactions" class="section">
+        <div class="welcome"><h1>All Transactions</h1><p>Task reward, withdrawal এবং admin adjustment history।</p></div>
+        <div class="panel"><div class="table-wrap"><table><thead><tr><th>User</th><th>Type</th><th>Amount</th><th>Status</th><th>Task / Note</th><th>Time</th></tr></thead><tbody id="transactionsBody"></tbody></table></div></div>
+      </section>
+
+      <section id="audit" class="section">
+        <div class="welcome"><h1>Audit History</h1><p>Admin-এর গুরুত্বপূর্ণ action-এর history।</p></div>
+        <div class="panel"><div class="table-wrap"><table><thead><tr><th>Admin</th><th>Action</th><th>Target</th><th>Details</th><th>Time</th></tr></thead><tbody id="auditBody"></tbody></table></div></div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<div id="modal" class="modal hidden"><div class="modal-card"><div class="modal-head"><h3 id="modalTitle">Control</h3><button class="x" onclick="closeModal()">✕</button></div><div id="modalBody"></div></div></div>
+<div id="toast" class="toast hidden"></div>
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+import {getAuth,signInWithEmailAndPassword,onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+import {getFirestore,collection,doc,getDoc,getDocs,addDoc,updateDoc,deleteDoc,onSnapshot,query,orderBy,limit,serverTimestamp,runTransaction} from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+
+const firebaseConfig={
+  apiKey:"AIzaSyA2ZEHWC-h6OpmAcePkoqGcGtwUu_OBHlg",
+  authDomain:"xmpr100.firebaseapp.com",
+  projectId:"xmpr100",
+  storageBucket:"xmpr100.firebasestorage.app",
+  messagingSenderId:"244432612940",
+  appId:"1:244432612940:web:495f7fc7f96e10fe444ee9",
+  measurementId:"G-8LV31BL3M8"
+};
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
+const $=id=>document.getElementById(id);
+let currentUser=null,users={},tasks=[],proofs=[],claims=[],withdrawals=[],transactions=[],adProgress=[],editingTaskId=null;
+
+const DEFAULT_TASKS=[
+{id:"default-facebook",type:"facebook",title:"Facebook Follow",description:"Facebook page/profile Follow করুন এবং Screenshot Proof জমা দিন।",reward:2,icon:"f",cooldownMinutes:0,requiresProof:true},
+{id:"default-youtube",type:"youtube",title:"YouTube Subscribe",description:"YouTube channel Subscribe করুন এবং Screenshot Proof জমা দিন।",reward:3,icon:"▶",cooldownMinutes:0,requiresProof:true},
+{id:"default-tiktok",type:"tiktok",title:"TikTok Follow / Like / Share",description:"TikTok-এ Follow, Like ও Share করুন এবং Screenshot Proof জমা দিন।",reward:2,icon:"♪",cooldownMinutes:0,requiresProof:true},
+{id:"default-monetization",type:"monetization_video",title:"Monetization Video",description:"Admin দেওয়া monetization video দেখুন।",reward:.20,icon:"▶",cooldownMinutes:30,requiresProof:false},
+{id:"default-ad-watch",type:"ad_watch",title:"Ad দেখে আয়",description:"Admin দেওয়া ad/video দেখুন।",reward:.20,icon:"AD",cooldownMinutes:30,requiresProof:false}
+];
+
+const esc=v=>String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+const money=v=>"৳"+Number(v||0).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+const stamp=v=>{try{const d=v?.toDate?v.toDate():new Date(v);return isNaN(d)? "—":d.toLocaleString("bn-BD")}catch{return"—"}};
+const uidOf=d=>String(d?.uid||d?.userId||"");
+const numOf=d=>String(d?.number||d?.withdrawNumber||d?.recipientNumber||d?.accountNumber||d?.bkashNumber||"");
+function badge(s){s=String(s||"Pending");let c=["Approved","active","completed"].includes(s)?"green":["Rejected","blocked","failed"].includes(s)?"red":"yellow";return `<span class="badge ${c}">${esc(s)}</span>`}
+function toast(msg,error=false){const t=$("toast");t.textContent=msg;t.style.background=error?"#4a172b":"#101d43";t.classList.remove("hidden");setTimeout(()=>t.classList.add("hidden"),2600)}
+function setLoginMsg(msg,error=false){$("loginMsg").textContent=msg;$("loginMsg").className="notice"+(error?" error":"")}
+function openModal(title,body){$("modalTitle").textContent=title;$("modalBody").innerHTML=body;$("modal").classList.remove("hidden")}
+window.closeModal=()=>$("modal").classList.add("hidden");
+
+async function isAdmin(user){if(!user||!user.uid)return false;try{const token=await user.getIdTokenResult(true);const claimAdmin=token?.claims?.admin===true;const s=await getDoc(doc(db,"users",user.uid));if(!s.exists())return false;const d=s.data();return d.role==="admin"||d.isAdmin===true||claimAdmin===true}catch(e){console.warn("Admin check failed",e);return false}}
+async function recheckAdmin(){if(!currentUser)return false;const ok=await isAdmin(currentUser);if(!ok){toast("Admin permission নেই — logout করা হচ্ছে",true);await signOut(auth);return false}return true}
+function validAmount(v,min=0,max=100000000){const n=Number(v);return Number.isFinite(n)&&n>=min&&n<=max}
+async function audit(action,target,details=""){try{await addDoc(collection(db,"adminLogs"),{adminUid:currentUser.uid,adminEmail:currentUser.email||"",action,target,details,createdAt:serverTimestamp()})}catch(e){console.warn(e)}}
+
+function go(page){
+  document.querySelectorAll(".section").forEach(x=>x.classList.remove("active"));
+  $(page)?.classList.add("active");
+  document.querySelectorAll(".nav button[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===page));
+  $("side").classList.remove("open");
+}
+document.querySelectorAll("[data-page]").forEach(b=>b.onclick=()=>go(b.dataset.page));
+$("menuBtn").onclick=()=>$("side").classList.toggle("open");
+
+function renderDefaultTasks(){
+  $("defaultTaskList").innerHTML=DEFAULT_TASKS.map(t=>`<div class="task-default"><div class="task-icon">${esc(t.icon)}</div><div><b>${esc(t.title)}</b><small>${money(t.reward)} • ${t.requiresProof?"Screenshot required":"30 min cooldown"}</small></div><span class="badge ${t.reward>=2?"green":""}">${money(t.reward)}</span></div>`).join("");
+}
+function fillTaskForm(t){
+  editingTaskId=t?.id||null;
+  $("taskType").value=t?.type||"facebook";
+  $("taskReward").value=t?.reward??DEFAULT_TASKS.find(x=>x.type===$("taskType").value)?.reward??2;
+  $("taskTitle").value=t?.title||"";
+  $("taskUrl").value=t?.url||"";
+  $("taskDesc").value=t?.description||"";
+  $("taskCooldown").value=t?.cooldownMinutes||0;
+  $("taskProof").value=t?.requiresProof===false?"no":"yes";$("taskActive").value=t?.active===false?"no":"yes";
+}
+function clearTask(){editingTaskId=null;fillTaskForm(DEFAULT_TASKS[0]);$("taskUrl").value="";}
+$("taskType").onchange=()=>{const t=DEFAULT_TASKS.find(x=>x.type===$("taskType").value);if(t)fillTaskForm(t)};
+$("clearTask").onclick=clearTask;
+
+async function saveTask(){
+  const type=$("taskType").value,title=$("taskTitle").value.trim(),reward=Number($("taskReward").value),url=$("taskUrl").value.trim(),description=$("taskDesc").value.trim(),cooldownMinutes=Number($("taskCooldown").value||0),requiresProof=$("taskProof").value==="yes",active=$("taskActive").value==="yes";
+  if(!(await recheckAdmin()))return;
+  if(!title||title.length>120)return toast("সঠিক Task Title দিন",true);
+  if(!validAmount(reward,0,100000))return toast("Reward 0 থেকে 100000-এর মধ্যে হতে হবে",true);
+  if(!Number.isInteger(cooldownMinutes)||cooldownMinutes<0||cooldownMinutes>100000)return toast("সঠিক cooldown দিন",true);
+  if(url && !/^https?:\/\//i.test(url))return toast("Task Link অবশ্যই http:// বা https:// দিয়ে শুরু হবে",true);
+  const data={type,title,reward,url,description,cooldownMinutes,requiresProof,active,icon:DEFAULT_TASKS.find(x=>x.type===type)?.icon||"▣",updatedAt:serverTimestamp()};
+  try{if(editingTaskId&& !editingTaskId.startsWith("default-"))await updateDoc(doc(db,"tasks",editingTaskId),data);else await addDoc(collection(db,"tasks"),{...data,createdAt:serverTimestamp(),createdBy:currentUser.uid});await audit("task_save",editingTaskId||type,`${title} | ${reward}`);toast("Task saved");loadTasks()}catch(e){toast(e.message,true)}
+}
+$("saveTask").onclick=saveTask;
+
+async function loadUsers(){
+  const s=await getDocs(collection(db,"users"));users={};s.forEach(d=>users[d.id]={id:d.id,...d.data()});
+  $("statUsers").textContent=s.size;
+  const total=Object.values(users).reduce((a,u)=>a+Number(u.balance||0),0);$("statBalance").textContent=money(total);
+  renderUsers();
+}
+function renderUsers(){
+  const term=$("userSearch").value.trim().toLowerCase();
+  const list=Object.values(users).filter(u=>(`${u.name||""} ${u.username||""} ${u.email||""} ${u.id}`).toLowerCase().includes(term));
+  $("usersBody").innerHTML=list.length?list.map(u=>`<tr><td><b>${esc(u.name||u.username||"User")}</b><br><span class="sub">${esc(u.email||"")}<br>${esc(u.id)}</span></td><td><b>${money(u.balance)}</b></td><td>${badge(u.role||"user")}</td><td>${badge(u.status||"active")}</td><td>${stamp(u.createdAt)}</td><td><div class="actions"><button onclick="editUser('${esc(u.id)}')">Balance</button><button class="${u.status==="blocked"?"success":"danger"}" onclick="toggleBlock('${esc(u.id)}','${u.status==="blocked"?"active":"blocked"}')">${u.status==="blocked"?"Unblock":"Block"}</button></div></td></tr>`).join(""):`<tr><td colspan="6" class="empty">কোনো user নেই</td></tr>`;
+}
+$("userSearch").oninput=renderUsers;$("refreshUsers").onclick=loadUsers;
+
+window.editUser=uid=>{const u=users[uid];if(!u)return;openModal("User Balance / Role",`<div class="grid"><div class="field"><label>User</label><input value="${esc(u.email||uid)}" disabled></div><div class="field"><label>Balance</label><input id="editBal" type="number" step="0.01" value="${Number(u.balance||0)}"></div><div class="field"><label>Role</label><select id="editRole"><option value="user">User</option><option value="admin">Admin</option></select></div><div class="field"><label>Status</label><select id="editStatus"><option value="active">Active</option><option value="blocked">Blocked</option></select></div><div class="field"><label>Reason</label><input id="editReason" placeholder="Manual adjustment"></div><button onclick="saveUser('${esc(uid)}')">Save</button></div>`);$("editRole").value=u.role||"user";$("editStatus").value=u.status||"active"};
+window.saveUser=async uid=>{try{if(!(await recheckAdmin()))return;if(uid===currentUser.uid&&($("editRole").value!=="admin"||$("editStatus").value==="blocked"))return toast("নিজের admin account demote বা block করা যাবে না",true);const u=users[uid],before=Number(u.balance||0),balance=Number($("editBal").value),role=$("editRole").value,status=$("editStatus").value,reason=$("editReason").value.trim();if(!validAmount(balance,0,100000000))return toast("সঠিক balance দিন",true);await runTransaction(db,async tx=>{tx.update(doc(db,"users",uid),{balance,role,status,updatedAt:serverTimestamp()});if(balance!==before)tx.set(doc(collection(db,"transactions")), {uid,type:"Admin Adjustment",amount:balance-before,balanceBefore:before,balanceAfter:balance,note:reason||"Admin balance adjustment",adminUid:currentUser.uid,createdAt:serverTimestamp()})});await audit("user_update",uid,`balance ${before} -> ${balance}; role=${role}; status=${status}`);closeModal();toast("User updated");loadUsers()}catch(e){toast(e.message,true)}};
+window.toggleBlock=async(uid,status)=>{try{if(!(await recheckAdmin()))return;if(uid===currentUser.uid)return toast("নিজের admin account block করা যাবে না",true);await updateDoc(doc(db,"users",uid),{status,updatedAt:serverTimestamp()});await audit(status==="blocked"?"user_block":"user_unblock",uid);toast(status==="blocked"?"User blocked":"User unblocked");loadUsers()}catch(e){toast(e.message,true)}};
+
+async function loadTasks(){
+  const s=await getDocs(collection(db,"tasks"));tasks=s.docs.map(d=>({id:d.id,...d.data()}));
+  const visible=DEFAULT_TASKS.map(def=>tasks.find(t=>t.type===def.type)||def);
+  $("statTasks").textContent=visible.filter(t=>t.active!==false).length;
+  $("tasksBody").innerHTML=visible.map(t=>`<tr><td><b>${esc(t.title)}</b><br><span class="sub">${esc(t.description||"")}</span></td><td>${money(t.reward)}</td><td>${t.requiresProof?badge("Required"):badge("No")}</td><td>${Number(t.cooldownMinutes||0)?Number(t.cooldownMinutes)+" min":"—"}</td><td>${badge(t.active===false?"inactive":"active")}</td><td><div class="actions"><button onclick="editTask('${esc(t.id)}')">Edit</button>${!String(t.id).startsWith("default-")?`<button class="danger" onclick="deleteTask('${esc(t.id)}')">Delete</button>`:""}</div></td></tr>`).join("");
+}
+window.editTask=id=>{const t=String(id).startsWith("default-")?DEFAULT_TASKS.find(x=>x.id===id):tasks.find(x=>x.id===id);if(t){fillTaskForm(t);go("tasks");toast("Task form loaded")}};
+window.deleteTask=async id=>{if(!(await recheckAdmin()))return;if(!confirm("এই task delete করবেন?"))return;try{await deleteDoc(doc(db,"tasks",id));await audit("task_delete",id);toast("Task deleted");loadTasks()}catch(e){toast(e.message,true)}};
+
+async function loadProofs(){
+  try{const s=await getDocs(query(collection(db,"taskProofs"),orderBy("createdAt","desc"),limit(300)));proofs=s.docs.map(d=>({id:d.id,...d.data()}))}
+  catch(e){const s=await getDocs(collection(db,"taskProofs"));proofs=s.docs.map(d=>({id:d.id,...d.data()}))}
+  const pending=proofs.filter(p=>p.status==="Pending").length;$("statProofs").textContent=pending;renderProofs();
+}
+function renderProofs(){
+  const filter=$("proofFilter").value,list=proofs.filter(p=>filter==="all"||p.status===filter);
+  $("proofsBody").innerHTML=list.length?list.map(p=>`<tr><td>${esc(p.email||p.uid||"")}</td><td><b>${esc(p.taskTitle||p.taskId||"")}</b></td><td>${money(p.reward)}</td><td>${p.screenshotUrl?`<button onclick="viewProof('${esc(p.id)}')">View</button>`:"—"}</td><td>${stamp(p.createdAt)}</td><td>${badge(p.status)}</td><td>${p.status==="Pending"?`<div class="actions"><button class="success" onclick="approveProof('${esc(p.id)}')">Approve</button><button class="danger" onclick="rejectProof('${esc(p.id)}')">Reject</button></div>`:"—"}</td></tr>`).join(""):`<tr><td colspan="7" class="empty">কোনো screenshot proof নেই</td></tr>`;
+}
+$("proofFilter").onchange=renderProofs;$("refreshProofs").onclick=loadProofs;
+
+window.viewProof=id=>{const p=proofs.find(x=>x.id===id);if(!p)return;openModal("Screenshot Proof",`<div class="sub"><b>User:</b> ${esc(p.email||p.uid)}<br><b>Task:</b> ${esc(p.taskTitle||p.taskId)}<br><b>Reward:</b> ${money(p.reward)}<br><b>Status:</b> ${esc(p.status||"Pending")}</div>${p.screenshotUrl?`<img class="proof-img" src="${esc(p.screenshotUrl)}" alt="Screenshot Proof">`:"<div class='empty'>Screenshot URL নেই</div>"}${p.status==="Pending"?`<div class="actions"><button class="success" onclick="approveProof('${esc(id)}');closeModal()">Approve & Reward</button><button class="danger" onclick="rejectProof('${esc(id)}');closeModal()">Reject</button></div>`:""}`)};
+window.approveProof=async id=>{try{if(!(await recheckAdmin()))return;await runTransaction(db,async tx=>{const pr=doc(db,"taskProofs",id),ps=await tx.get(pr);if(!ps.exists())throw new Error("Proof not found");const p=ps.data();if(p.status!=="Pending")throw new Error("Proof already processed");const uid=p.uid;if(!uid)throw new Error("User UID missing");const reward=Number(p.reward||0);if(!validAmount(reward,0,100000))throw new Error("Invalid reward");const claimId=p.claimId||uid+"_proof_"+id;const cr=doc(db,"taskClaims",claimId),cs=await tx.get(cr);if(cs.exists()&&cs.data().status!=="Pending")throw new Error("Claim already processed");const ur=doc(db,"users",uid),us=await tx.get(ur);if(!us.exists())throw new Error("User not found");const before=Number(us.data().balance||0);tx.update(pr,{status:"Approved",approvedAt:serverTimestamp(),approvedBy:currentUser.uid});if(cs.exists())tx.update(cr,{status:"Approved",approvedAt:serverTimestamp(),approvedBy:currentUser.uid});else tx.set(cr,{uid,email:p.email||"",taskId:p.taskId,taskTitle:p.taskTitle,taskType:p.taskType,reward,status:"Approved",proofId:id,createdAt:serverTimestamp(),approvedAt:serverTimestamp(),approvedBy:currentUser.uid});tx.update(ur,{balance:before+reward,updatedAt:serverTimestamp()});tx.set(doc(db,"transactions",claimId),{uid,type:"Task Reward",taskId:p.taskId,taskTitle:p.taskTitle,taskType:p.taskType,amount:reward,status:"Approved",proofId:id,balanceBefore:before,balanceAfter:before+reward,createdAt:serverTimestamp(),approvedBy:currentUser.uid})});await audit("proof_approve",id,`reward=${money(proofs.find(p=>p.id===id)?.reward||0)}`);toast("Proof approved — reward added");loadProofs();loadClaims();loadUsers();loadTransactions()}catch(e){toast(e.message,true)}};
+window.rejectProof=async id=>{try{if(!(await recheckAdmin()))return;await updateDoc(doc(db,"taskProofs",id),{status:"Rejected",rejectedAt:serverTimestamp(),rejectedBy:currentUser.uid});await audit("proof_reject",id);toast("Proof rejected");loadProofs()}catch(e){toast(e.message,true)}};
+
+async function loadClaims(){
+  try{const s=await getDocs(query(collection(db,"taskClaims"),orderBy("createdAt","desc"),limit(300)));claims=s.docs.map(d=>({id:d.id,...d.data()}))}
+  catch(e){const s=await getDocs(collection(db,"taskClaims"));claims=s.docs.map(d=>({id:d.id,...d.data()}))}
+  renderClaims();
+}
+function renderClaims(){
+  const filter=$("claimFilter")?.value||"all",list=claims.filter(c=>filter==="all"||c.status===filter);
+  const body=$("claimsBody"); if(!body)return;
+  body.innerHTML=list.length?list.map(c=>`<tr><td>${esc(c.email||c.uid||"")}</td><td><b>${esc(c.taskTitle||c.taskId||"")}</b></td><td>${money(c.reward)}</td><td>${c.proofId?`<button onclick="viewProof('${esc(c.proofId)}')">View</button>`:"—"}</td><td>${stamp(c.createdAt)}</td><td>${badge(c.status)}</td><td>${c.status==="Pending"?`<div class="actions"><button class="success" onclick="approveClaim('${esc(c.id)}')">Approve & Add Balance</button><button class="danger" onclick="rejectClaim('${esc(c.id)}')">Reject</button></div>`:"—"}</td></tr>`).join(""):`<tr><td colspan="7" class="empty">কোনো task claim নেই</td></tr>`;
+}
+$("claimFilter").onchange=renderClaims;$("refreshClaims").onclick=loadClaims;
+window.approveClaim=async id=>{try{if(!(await recheckAdmin()))return;await runTransaction(db,async tx=>{const cr=doc(db,"taskClaims",id),cs=await tx.get(cr);if(!cs.exists())throw new Error("Claim not found");const c=cs.data();if(c.status!=="Pending")throw new Error("Claim already processed");if(c.proofId){const pr=doc(db,"taskProofs",c.proofId),ps=await tx.get(pr);if(!ps.exists()||ps.data().status!=="Pending")throw new Error("Screenshot proof is not pending");tx.update(pr,{status:"Approved",approvedAt:serverTimestamp(),approvedBy:currentUser.uid})}const ur=doc(db,"users",c.uid),us=await tx.get(ur);if(!us.exists())throw new Error("User not found");const reward=Number(c.reward||0);if(!validAmount(reward,0,100000))throw new Error("Invalid reward");const before=Number(us.data().balance||0);tx.update(cr,{status:"Approved",approvedAt:serverTimestamp(),approvedBy:currentUser.uid});tx.update(ur,{balance:before+reward,updatedAt:serverTimestamp()});tx.set(doc(db,"transactions",id),{uid:c.uid,type:"Task Reward",taskId:c.taskId,taskTitle:c.taskTitle,taskType:c.type||c.taskType||"",amount:reward,status:"Approved",proofId:c.proofId||null,balanceBefore:before,balanceAfter:before+reward,createdAt:serverTimestamp(),approvedBy:currentUser.uid})});await audit("claim_approve",id,`reward=${money(claims.find(c=>c.id===id)?.reward||0)}`);toast("Claim approved — balance updated");loadClaims();loadProofs();loadUsers();loadTransactions()}catch(e){toast(e.message,true)}};
+window.rejectClaim=async id=>{try{if(!(await recheckAdmin()))return;await runTransaction(db,async tx=>{const cr=doc(db,"taskClaims",id),cs=await tx.get(cr);if(!cs.exists())throw new Error("Claim not found");if(cs.data().status!=="Pending")throw new Error("Claim already processed");tx.update(cr,{status:"Rejected",rejectedAt:serverTimestamp(),rejectedBy:currentUser.uid})});await audit("claim_reject",id);toast("Claim rejected");loadClaims()}catch(e){toast(e.message,true)}};
+
+async function loadWithdrawals(){
+  try{const s=await getDocs(query(collection(db,"withdrawals"),orderBy("createdAt","desc"),limit(300)));withdrawals=s.docs.map(d=>({id:d.id,...d.data()}))}
+  catch(e){const s=await getDocs(collection(db,"withdrawals"));withdrawals=s.docs.map(d=>({id:d.id,...d.data()}))}
+  $("statWithdrawals").textContent=withdrawals.filter(w=>w.status==="Pending").length;renderWithdrawals();
+}
+function renderWithdrawals(){const f=$("withdrawFilter").value,list=withdrawals.filter(w=>f==="all"||w.status===f);$("withdrawalsBody").innerHTML=list.length?list.map(w=>`<tr><td>${esc(w.email||uidOf(w))}</td><td><b>${money(w.amount)}</b></td><td>${esc(w.method||"")}</td><td>${esc(numOf(w))}</td><td>${stamp(w.createdAt)}</td><td>${badge(w.status)}</td><td>${w.status==="Pending"?`<div class="actions"><button class="success" onclick="approveWithdrawal('${esc(w.id)}')">Approve</button><button class="danger" onclick="rejectWithdrawal('${esc(w.id)}')">Reject</button></div>`:"—"}</td></tr>`).join(""):`<tr><td colspan="7" class="empty">কোনো withdrawal নেই</td></tr>`}
+$("withdrawFilter").onchange=renderWithdrawals;$("refreshWithdrawals").onclick=loadWithdrawals;
+$("refreshAdProgress").onclick=loadAdProgress;
+window.approveWithdrawal=async id=>{try{if(!(await recheckAdmin()))return;await runTransaction(db,async tx=>{const wr=doc(db,"withdrawals",id),ws=await tx.get(wr);if(!ws.exists())throw new Error("Withdrawal not found");const w=ws.data();if(w.status!=="Pending")throw new Error("Already processed");const uid=w.uid,amt=Number(w.amount||0),ur=doc(db,"users",uid),us=await tx.get(ur);if(!us.exists())throw new Error("User not found");if(!Number.isFinite(amt)||amt<=0)throw new Error("Invalid withdrawal amount");const before=Number(us.data().balance||0);if(amt>before)throw new Error("User balance is not enough");tx.update(wr,{status:"Approved",approvedAt:serverTimestamp(),approvedBy:currentUser.uid});tx.update(ur,{balance:before-amt,updatedAt:serverTimestamp()});tx.set(doc(db,"transactions","withdraw_"+id),{uid,type:"Withdrawal",amount:-amt,status:"Approved",method:w.method||"",number:numOf(w),balanceBefore:before,balanceAfter:before-amt,createdAt:serverTimestamp(),approvedBy:currentUser.uid})});await audit("withdrawal_approve",id);toast("Withdrawal approved");loadWithdrawals();loadUsers();loadTransactions()}catch(e){toast(e.message,true)}};
+window.rejectWithdrawal=async id=>{try{if(!(await recheckAdmin()))return;await updateDoc(doc(db,"withdrawals",id),{status:"Rejected",rejectedAt:serverTimestamp(),rejectedBy:currentUser.uid});await audit("withdrawal_reject",id);toast("Withdrawal rejected");loadWithdrawals()}catch(e){toast(e.message,true)}};
+
+async function loadTransactions(){try{const s=await getDocs(query(collection(db,"transactions"),orderBy("createdAt","desc"),limit(500)));transactions=s.docs.map(d=>({id:d.id,...d.data()}))}catch(e){const s=await getDocs(collection(db,"transactions"));transactions=s.docs.map(d=>({id:d.id,...d.data()}))}renderTransactions()}
+function renderTransactions(){$("transactionsBody").innerHTML=transactions.length?transactions.map(t=>`<tr><td>${esc(users[uidOf(t)]?.email||uidOf(t)||"")}</td><td>${esc(t.type||"")}</td><td>${money(t.amount)}</td><td>${badge(t.status||"Approved")}</td><td>${esc(t.taskTitle||t.note||"")}</td><td>${stamp(t.createdAt)}</td></tr>`).join(""):`<tr><td colspan="6" class="empty">কোনো transaction নেই</td></tr>`}
+
+async function loadAdProgress(){
+  try{const s=await getDocs(query(collection(db,"adProgress"),orderBy("updatedAt","desc"),limit(500)));adProgress=s.docs.map(d=>({id:d.id,...d.data()}))}
+  catch(e){try{const s=await getDocs(collection(db,"adProgress"));adProgress=s.docs.map(d=>({id:d.id,...d.data()}))}catch(err){adProgress=[]}}
+  $("statAdCompletions").textContent=adProgress.filter(x=>x.status==="Completed").length;
+  renderAdProgress();
+}
+function renderAdProgress(){
+  const f=$("adProgressFilter")?.value||"all",list=adProgress.filter(x=>f==="all"||x.status===f);
+  $("adProgressBody").innerHTML=list.length?list.map(x=>{
+    const done=Number(x.completedAds??x.verifiedAds??x.count??0), req=Number(x.requiredAds??x.totalRequired??10), pct=req>0?Math.min(100,Math.round(done/req*100)):0;
+    return `<tr><td>${esc(x.email||x.uid||"")}</td><td><b>${esc(x.taskTitle||x.taskId||"")}</b></td><td><b>${done}/${req}</b><br><span class="sub">${pct}%</span></td><td>${Number(x.verifiedImpressions||0)}</td><td>${Number(x.verifiedClicks||0)}</td><td>${badge(x.status||"In Progress")}</td><td>${stamp(x.updatedAt||x.createdAt)}</td></tr>`;
+  }).join(""):`<tr><td colspan="7" class="empty">কোনো verified ad progress নেই</td></tr>`;
+}
+$("adProgressFilter").onchange=renderAdProgress;$("refreshAdProgress").onclick=loadAdProgress;
+
+async function loadAudit(){let s;try{s=await getDocs(query(collection(db,"adminLogs"),orderBy("createdAt","desc"),limit(500)))}catch(e){s=await getDocs(collection(db,"adminLogs"))}$("auditBody").innerHTML=s.size?[...s.docs].map(d=>{const x=d.data();return`<tr><td>${esc(x.adminEmail||x.adminUid||"")}</td><td>${esc(x.action||"")}</td><td>${esc(x.target||"")}</td><td>${esc(x.details||"")}</td><td>${stamp(x.createdAt)}</td></tr>`}).join(""):`<tr><td colspan="5" class="empty">কোনো audit history নেই</td></tr>`}
+
+async function refreshAll(){await Promise.all([loadUsers(),loadTasks(),loadProofs(),loadClaims(),loadWithdrawals(),loadTransactions(),loadAdProgress(),loadAudit()])}
+
+$("loginBtn").onclick=async()=>{const email=$("email").value.trim(),password=$("password").value;if(!email||!password)return setLoginMsg("Email ও password দিন।",true);$("loginBtn").disabled=true;try{const c=await signInWithEmailAndPassword(auth,email,password);if(!(await isAdmin(c.user))){await signOut(auth);return setLoginMsg("এই account-এর admin permission নেই।",true)}setLoginMsg("Login সফল।");}catch(e){setLoginMsg("Login ব্যর্থ: "+e.message,true)}finally{$("loginBtn").disabled=false}};
+$("logoutBtn").onclick=()=>signOut(auth);
+
+onAuthStateChanged(auth,async user=>{if(!user){currentUser=null;$("loginView").classList.remove("hidden");$("appView").classList.add("hidden");return}try{if(!(await isAdmin(user))){await signOut(auth);setLoginMsg("এই account-এর admin permission নেই।",true);return}currentUser=user;$("adminEmail").textContent=user.email||user.uid;$("loginView").classList.add("hidden");$("appView").classList.remove("hidden");renderDefaultTasks();clearTask();await refreshAll()}catch(e){await signOut(auth);setLoginMsg("Admin check ব্যর্থ: "+e.message,true)}});
+
+$("refreshUsers").onclick=loadUsers;
+$("refreshProofs").onclick=loadProofs;
+$("refreshWithdrawals").onclick=loadWithdrawals;
+$("refreshAdProgress").onclick=loadAdProgress;
+</script>
+</body>
+</html>
